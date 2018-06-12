@@ -1,4 +1,4 @@
-defmodule StreetSellersClockInWeb.SignUpView do
+defmodule StreetSellersClockInWeb.UserView do
   use StreetSellersClockInWeb, :view
 
   def render("fail.json", %{message: message}) do
