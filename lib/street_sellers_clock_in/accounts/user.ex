@@ -17,6 +17,6 @@ defmodule StreetSellersClockIn.Accounts.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:username, :alias, :avatar_id, :password, :email])
-    |> validate_required([:username, :alias, :avatar_id, :password, :email])
+    |> validate_required([:username, :alias, :avatar_id, :password])
   end
 end
