@@ -1,0 +1,17 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:11
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 1qaz2wsx
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - $PWD/postgres:/var/lib/postgresql/data
+    container_name: ssci_postgres
+  # redis:
+  #   image: redis:latest
+  #   ports:
+  #     - "127.0.0.1:6379:6379"
+  #   container_name: revents_redis
