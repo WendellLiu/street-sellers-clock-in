@@ -8,4 +8,10 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api", StreetSellersClockInWeb do
     pipe_through :api
   end
+
+  scope "/api/auth", StreetSellersClockInWeb do
+    pipe_through :api
+
+    resources "/signup",  SignUpController
+  end
 end
