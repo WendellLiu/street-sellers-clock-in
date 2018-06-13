@@ -12,6 +12,6 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api/auth", StreetSellersClockInWeb do
     pipe_through :api
 
-    post "/signup", UserController, :create
+    resources "/signup", UserController
   end
 end
