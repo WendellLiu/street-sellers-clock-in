@@ -16,6 +16,8 @@ defmodule StreetSellersClockInWeb.UserView do
       alias: user.alias,
       avatar_id: user.avatar_id,
       password: user.password,
-      email: user.email}
+      email: user.email,
+      memo: user.memo,
+    }
   end
 end
