@@ -10,6 +10,7 @@ defmodule StreetSellersClockInWeb.Router do
 
     resources "/users", UserController, except: [:create]
     resources "/product/categories", CategoryController
+    resources "/clock_in/clock_record", ClockRecordController
   end
 
   scope "/api/auth", StreetSellersClockInWeb do
