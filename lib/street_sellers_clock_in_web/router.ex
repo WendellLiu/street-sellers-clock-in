@@ -7,8 +7,9 @@ defmodule StreetSellersClockInWeb.Router do
 
   scope "/api", StreetSellersClockInWeb do    
     pipe_through :api
-    
+
     resources "/users", UserController, except: [:create]
+    resources "/product/categories", CategoryController
   end
 
   scope "/api/auth", StreetSellersClockInWeb do
