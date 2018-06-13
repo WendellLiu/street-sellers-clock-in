@@ -5,13 +5,15 @@ defmodule StreetSellersClockInWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", StreetSellersClockInWeb do
+  scope "/api", StreetSellersClockInWeb do    
     pipe_through :api
+    
+    resources "/users", UserController, except: [:create]
   end
 
   scope "/api/auth", StreetSellersClockInWeb do
     pipe_through :api
 
-    resources "/signup", UserController
+    post "/signup", UserController, :create
   end
 end
