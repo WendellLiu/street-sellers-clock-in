@@ -41,6 +41,8 @@ defmodule StreetSellersClockIn.Mixfile do
       {:cowboy, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:pbkdf2_elixir, "~> 0.12"},
+      {:quantum, "~> 2.2"},
+      {:timex, "~> 3.0"}
     ]
   end
 

@@ -44,3 +44,10 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
   database: "street_sellers_clock_in_dev",
   hostname: "localhost",
   pool_size: 10
+
+# configure scheduler
+config :street_sellers_clock_in, StreetSellersClockIn.Scheduler,
+  jobs: [
+    # Every minute
+    {"* * * * *", fn -> IO.puts "testtest" end},
+  ]
