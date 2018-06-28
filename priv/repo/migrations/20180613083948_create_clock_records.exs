@@ -11,13 +11,10 @@ defmodule StreetSellersClockIn.Repo.Migrations.CreateClockRecords do
       add :photo_ids, :string
       add :longitude, :float
       add :latitude, :float
-      add :user_id, references(:users, on_delete: :nothing)
-      add :category_id, references(:product_categories, on_delete: :nothing)
+      add :category_ids, :string
 
       timestamps()
     end
 
-    create index(:clock_records, [:user_id])
-    create index(:clock_records, [:category_id])
   end
 end

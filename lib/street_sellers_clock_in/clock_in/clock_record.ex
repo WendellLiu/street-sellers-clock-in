@@ -13,8 +13,7 @@ defmodule StreetSellersClockIn.ClockIn.ClockRecord do
     field :planned_clock_out_time, :naive_datetime
     field :slogan, :string
     field :status, :integer, default: clock_record_status_mapping()[:CLOCK_OUT]
-    field :user_id, :id
-    field :category_id, :id
+    field :category_ids, :string
 
     timestamps()
   end
@@ -22,9 +21,7 @@ defmodule StreetSellersClockIn.ClockIn.ClockRecord do
   @doc false
   def changeset(clock_record, attrs) do
     clock_record
-    |> cast(attrs, [:user_id,:category_id, :clock_in_time, :planned_clock_out_time, :clock_out_time, :status, :slogan, :photo_ids, :longitude, :latitude])
-    |> foreign_key_constraint(:user_id)
-    |> foreign_key_constraint(:category_id)
-    |> validate_required([:user_id, :category_id, :clock_in_time, :planned_clock_out_time, :longitude, :latitude])
+    |> cast(attrs, [:category_ids, :clock_in_time, :planned_clock_out_time, :clock_out_time, :status, :slogan, :photo_ids, :longitude, :latitude])
+    |> validate_required([:clock_in_time, :planned_clock_out_time, :longitude, :latitude])
   end
 end

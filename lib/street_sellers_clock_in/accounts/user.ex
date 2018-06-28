@@ -11,6 +11,7 @@ defmodule StreetSellersClockIn.Accounts.User do
     field :password, :string
     field :username, :string
     field :memo, :string
+    field :clock_record_id, :id
 
     timestamps()
   end
@@ -18,9 +19,10 @@ defmodule StreetSellersClockIn.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :alias, :avatar_id, :password, :email, :memo])
+    |> cast(attrs, [:username, :alias, :avatar_id, :password, :email, :memo, :clock_record_id])
     |> unique_constraint(:email)
     |> unique_constraint(:username)
+    |> foreign_key_constraint(:clock_record_id)
     |> validate_required([:username, :alias, :password])
     |> handle_password
   end
