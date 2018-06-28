@@ -5,6 +5,7 @@ defmodule StreetSellersClockIn.Product.Category do
 
   schema "product_categories" do
     field :name, :string
+    field :memo, :string
 
     timestamps()
   end
@@ -12,7 +13,7 @@ defmodule StreetSellersClockIn.Product.Category do
   @doc false
   def changeset(category, attrs) do
     category
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :memo])
     |> validate_required([:name])
   end
 end

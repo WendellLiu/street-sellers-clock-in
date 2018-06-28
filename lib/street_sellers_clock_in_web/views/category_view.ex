@@ -12,6 +12,8 @@ defmodule StreetSellersClockInWeb.CategoryView do
 
   def render("category.json", %{category: category}) do
     %{id: category.id,
-      name: category.name}
+      name: category.name,
+      memo: category.memo
+    }
   end
 end
