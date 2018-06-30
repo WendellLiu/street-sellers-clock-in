@@ -49,5 +49,5 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
 config :street_sellers_clock_in, StreetSellersClockIn.Scheduler,
   jobs: [
     # Every minute
-    {"* * * * *", fn -> IO.puts "testtest" end},
+    {"* * * * *", fn -> IO.puts "testtestttt" end},
   ]
