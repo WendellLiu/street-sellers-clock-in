@@ -4,7 +4,6 @@ COPY . /app
 
 WORKDIR /app
 
-ARG PORT
 ARG MIX_ENV
 
 # Initial setup

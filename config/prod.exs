@@ -17,7 +17,9 @@ config :street_sellers_clock_in, StreetSellersClockInWeb.Endpoint,
   load_from_system_env: true,
   # url: [host: "example.com", port: 80],
   http: [port: System.get_env("PORT")],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  secret_key_base: System.get_env("WEB_API_SERVER_SECRET")
+
 
 # Do not print debug messages in production
 config :logger, level: :info

@@ -1,22 +1,5 @@
 version: '3'
 services:
-  api_server:
-    build:
-      context: $PWD
-      dockerfile: ./docker/Dockerfile
-      args:
-        - PORT=4001
-        - MIX_ENV=prod
-    env_file:
-      - $PWD/docker/.env
-    ports:
-      - "127.0.0.1:4001:4001"
-    links:
-      - postgres:postgres_db
-    depends_on:
-      - postgres
-    restart: on-failure
-    container_name: ssci_api_server
   postgres:
     image: postgres:11
     restart: always
@@ -25,3 +8,17 @@ services:
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres
+  api_server:
+    build:
+      context: $PWD
+      dockerfile: ./docker/Dockerfile
+      args:
+        - MIX_ENV=prod
+    env_file:
+      - $PWD/docker/.env
+    ports:
+      - "127.0.0.1:${PORT:-4001}:${PORT:-4001}"
+    links:
+      - postgres:postgres_db
+    restart: on-failure
+    container_name: ssci_api_server
