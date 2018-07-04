@@ -1,13 +1,5 @@
 version: '3'
 services:
-  postgres:
-    image: postgres:11
-    restart: always
-    env_file:
-     - $PWD/docker/.env
-    volumes:
-      - $PWD/postgres:/var/lib/postgresql/data
-    container_name: ssci_postgres
   api_server:
     build:
       context: $PWD
@@ -20,13 +12,16 @@ services:
     ports:
       - "127.0.0.1:4001:4001"
     links:
-      - postgres
+      - postgres:postgres_db
     depends_on:
       - postgres
     restart: on-failure
     container_name: ssci_api_server
-  # redis:
-  #   image: redis:latest
-  #   ports:
-  #     - "127.0.0.1:6379:6379"
-  #   container_name: revents_redis
+  postgres:
+    image: postgres:11
+    restart: always
+    env_file:
+     - $PWD/docker/.env
+    volumes:
+      - $PWD/postgres:/var/lib/postgresql/data
+    container_name: ssci_postgres

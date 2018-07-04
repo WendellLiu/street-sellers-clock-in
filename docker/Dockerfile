@@ -5,9 +5,7 @@ COPY . /app
 WORKDIR /app
 
 ARG PORT
-
-ENV MIX_ENV prod
-ENV PORT ${PORT}
+ARG MIX_ENV
 
 # Initial setup
 RUN mix local.hex --force
