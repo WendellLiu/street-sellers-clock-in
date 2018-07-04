@@ -21,6 +21,16 @@ config :street_sellers_clock_in, StreetSellersClockInWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+# Configure your database
+config :street_sellers_clock_in, StreetSellersClockIn.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
+  database: "street_sellers_clock_in_prod",
+  hostname: System.get_env("POSTGRES_HOSTNAME"),
+  port: System.get_env("POSTGRES_PORT"),
+  pool_size: 15
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
