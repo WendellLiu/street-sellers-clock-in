@@ -12,7 +12,7 @@ defmodule StreetSellersClockInWeb.ClockRecordView do
 
   def render("clock_record.json", %{clock_record: clock_record}) do
     %{id: clock_record.id,
-      category_ids: clock_record.category_ids,
+      category_ids: clock_record.category_ids |> String.split(","),
       clock_in_time: clock_record.clock_in_time,
       planned_clock_out_time: clock_record.planned_clock_out_time,
       clock_out_time: clock_record.clock_out_time,
