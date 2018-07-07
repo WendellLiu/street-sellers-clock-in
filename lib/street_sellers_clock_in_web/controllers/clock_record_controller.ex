@@ -12,6 +12,9 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
   end
 
   def create(conn, %{"clock_record" => clock_record_params}) do
+    clock_record_params = clock_record_params
+      |> handle_category_ids
+
     with {:ok, %ClockRecord{} = clock_record} <- ClockIn.create_clock_record(clock_record_params) do
       conn
       |> put_status(:created)
@@ -37,6 +40,19 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
     clock_record = ClockIn.get_clock_record!(id)
     with {:ok, %ClockRecord{}} <- ClockIn.delete_clock_record(clock_record) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  defp handle_category_ids(clock_record_params) do
+    cond do
+      Map.has_key?(clock_record_params, "category_ids") ->
+        Map.put(
+          clock_record_params,
+          "category_ids",
+          Map.get(clock_record_params, "category_ids") |> Enum.join(",")
+        )
+      true ->
+        clock_record_params
     end
   end
 end
