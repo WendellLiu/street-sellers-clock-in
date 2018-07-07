@@ -28,6 +28,9 @@ defmodule StreetSellersClockIn.Accounts.User do
   end
 
   defp handle_password(profile) do
-    put_change(profile, :password, Password.hash_password(get_field(profile, :password)))
+    cond do
+      Map.has_key?(profile, "password") -> put_change(profile, :password, Password.hash_password(get_field(profile, :password)))
+      true -> profile
+    end
   end
 end

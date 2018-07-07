@@ -28,6 +28,9 @@ defmodule StreetSellersClockInWeb.UserController do
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
 
+    # black list for non-allowed-changed params
+    user_params = Map.drop(user_params, ["password", "username", "clock_record_id"])
+
     with {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
       render(conn, "show.json", user: user)
     end
