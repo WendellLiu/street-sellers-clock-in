@@ -3,6 +3,7 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
 
   alias StreetSellersClockIn.ClockIn
   alias StreetSellersClockIn.ClockIn.ClockRecord
+  alias Utils.Data.Converters
 
   action_fallback StreetSellersClockInWeb.FallbackController
 
@@ -13,7 +14,7 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
 
   def create(conn, %{"clock_record" => clock_record_params}) do
     clock_record_params = clock_record_params
-      |> handle_category_ids
+      |> Converters.array_to_string("category_ids")
 
     with {:ok, %ClockRecord{} = clock_record} <- ClockIn.create_clock_record(clock_record_params) do
       conn
@@ -43,16 +44,4 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
     end
   end
 
-  defp handle_category_ids(clock_record_params) do
-    cond do
-      Map.has_key?(clock_record_params, "category_ids") ->
-        Map.put(
-          clock_record_params,
-          "category_ids",
-          Map.get(clock_record_params, "category_ids") |> Enum.join(",")
-        )
-      true ->
-        clock_record_params
-    end
-  end
 end
