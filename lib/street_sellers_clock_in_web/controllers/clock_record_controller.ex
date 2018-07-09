@@ -62,4 +62,7 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
     end
   end
 
+  def clock_out(conn, %{"clock_record_id" => clock_record_id}) do
+    IO.puts "clock_record_id #{clock_record_id}"
+  end
 end

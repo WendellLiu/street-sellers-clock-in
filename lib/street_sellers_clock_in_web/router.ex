@@ -20,7 +20,9 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api/clock_in", StreetSellersClockInWeb do
     pipe_through :api
 
-    resources "/clock_record", ClockRecordController
+    resources "/clock_record", ClockRecordController do
+      put "/clock_out", ClockRecordController, :clock_out, as: :clock_out
+    end
   end
 
   scope "/api/auth", StreetSellersClockInWeb do
