@@ -12,7 +12,7 @@ defmodule StreetSellersClockIn.ClockIn.ClockRecord do
     field :photo_ids, :string
     field :planned_clock_out_time, :naive_datetime
     field :slogan, :string
-    field :status, :integer, default: clock_record_status_mapping()[:CLOCK_OUT]
+    field :status, :integer, default: clock_record_status_mapping()[:CLOCK_IN]
     field :category_ids, :string
 
     timestamps()
