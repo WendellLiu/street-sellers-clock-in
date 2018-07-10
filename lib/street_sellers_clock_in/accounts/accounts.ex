@@ -106,9 +106,16 @@ defmodule StreetSellersClockIn.Accounts do
   end
 
   def get_clock_in_users do
+    now = NaiveDateTime.utc_now
+    sub_clock_record = from(p_c in ClockRecord, where: p_c.planned_clock_out_time < ^now)
+
     users = from u in User,
-      join: c in ClockRecord, on: u.clock_record_id == c.id,
-      select: {u.id, c.id, c.planned_clock_out_time}
+      join: c in subquery(sub_clock_record) , on: u.clock_record_id == c.id,
+      select: %{
+        "user_id" => u.id,
+        "clock_record_id" => c.id,
+        "planned_clock_out_time" => c.planned_clock_out_time,
+      }
     users |> Repo.all
   end
 end

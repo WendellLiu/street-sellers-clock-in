@@ -44,6 +44,9 @@ defmodule StreetSellersClockInWeb.UserController do
   end
 
   def test(conn, _) do
-    IO.inspect Accounts.get_clock_in_users()
+    users = Accounts.get_clock_in_users()
+    IO.inspect users
+    planned_clock_out_times = users |> Enum.map(&(&1["planned_clock_out_time"]))
+    IO.inspect planned_clock_out_times
   end
 end
