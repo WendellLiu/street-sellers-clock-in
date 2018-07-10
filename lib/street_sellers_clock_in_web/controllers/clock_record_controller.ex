@@ -5,7 +5,6 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
   alias StreetSellersClockIn.ClockIn.ClockRecord
   alias StreetSellersClockIn.Accounts
   alias Utils.Data.Converters
-  import Constants.Mapping
 
   action_fallback StreetSellersClockInWeb.FallbackController
 
@@ -64,21 +63,8 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
   end
 
   def clock_out(conn, %{"clock_record_id" => clock_record_id}) do
-    user = Accounts.get_user_by_attr!(%{clock_record_id: clock_record_id})
-
-    user_params = %{
-      clock_record_id: nil,
-    }
-
-    with {:ok, _} <- Accounts.update_user(user, user_params) do
-      clock_record = ClockIn.get_clock_record!(clock_record_id)
-      clock_record_params = %{
-        status: clock_record_status_mapping()[:CLOCK_OUT]
-      }
-
-      with {:ok, %ClockRecord{} = clock_record} <- ClockIn.update_clock_record(clock_record, clock_record_params) do
-        render(conn, "show.json", clock_record: clock_record)
-      end
+    with {:ok, %ClockRecord{} = clock_record} <- ClockIn.clock_out(clock_record_id) do
+      render(conn, "show.json", clock_record: clock_record)
     end
   end
 end

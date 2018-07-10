@@ -7,6 +7,9 @@ defmodule StreetSellersClockIn.ClockIn do
   alias StreetSellersClockIn.Repo
 
   alias StreetSellersClockIn.ClockIn.ClockRecord
+  alias StreetSellersClockIn.Accounts
+
+  import Constants.Mapping
 
   @doc """
   Returns the list of clock_records.
@@ -100,5 +103,24 @@ defmodule StreetSellersClockIn.ClockIn do
   """
   def change_clock_record(%ClockRecord{} = clock_record) do
     ClockRecord.changeset(clock_record, %{})
+  end
+
+  def clock_out(clock_record_id) do
+    user = Accounts.get_user_by_attr!(%{clock_record_id: clock_record_id})
+
+    user_params = %{
+      clock_record_id: nil,
+    }
+
+    with {:ok, _} <- Accounts.update_user(user, user_params) do
+      clock_record = get_clock_record!(clock_record_id)
+      clock_record_params = %{
+        status: clock_record_status_mapping()[:CLOCK_OUT]
+      }
+
+      with {:ok, %ClockRecord{} = clock_record} <- update_clock_record(clock_record, clock_record_params) do
+        {:ok, clock_record}
+      end
+    end
   end
 end
