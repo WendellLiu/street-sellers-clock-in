@@ -13,9 +13,10 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
     render(conn, "index.json", clock_records: clock_records)
   end
 
-  def create(conn, %{"clock_record" => clock_record_params}) do
-    user_id = clock_record_params |> Map.get("user_id")
-
+  def create(conn, %{
+      "clock_record" => clock_record_params,
+      "user_id" => user_id,
+    }) do
     case user_id do
       nil -> conn
         |> put_status(:unprocessable_entity)

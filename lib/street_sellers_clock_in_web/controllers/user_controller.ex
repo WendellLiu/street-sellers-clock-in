@@ -47,7 +47,6 @@ defmodule StreetSellersClockInWeb.UserController do
   def test(conn, _) do
     users = Accounts.get_clock_in_users()
     IO.inspect users
-    IO.inspect users
       |> Enum.map(&(&1["clock_record_id"]))
       |> Enum.map(fn(clock_record_id) -> ClockIn.clock_out(clock_record_id) end)
   end

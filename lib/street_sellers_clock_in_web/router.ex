@@ -8,7 +8,9 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api", StreetSellersClockInWeb do
     pipe_through :api
 
-    resources "/users", UserController, except: [:create]
+    resources "/users", UserController, except: [:create] do
+      post "/clock_in", ClockRecordController, :create, as: :user_clock_in
+    end
   end
 
   scope "/api/product", StreetSellersClockInWeb do
@@ -20,7 +22,7 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api/clock_in", StreetSellersClockInWeb do
     pipe_through :api
 
-    resources "/clock_record", ClockRecordController do
+    resources "/clock_record", ClockRecordController, except: [:create] do
       put "/clock_out", ClockRecordController, :clock_out, as: :clock_out
     end
   end
