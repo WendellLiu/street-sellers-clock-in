@@ -42,4 +42,8 @@ defmodule StreetSellersClockInWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def test(conn, _) do
+    IO.inspect Accounts.get_clock_in_users()
+  end
 end

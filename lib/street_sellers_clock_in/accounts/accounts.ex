@@ -7,6 +7,7 @@ defmodule StreetSellersClockIn.Accounts do
   alias StreetSellersClockIn.Repo
 
   alias StreetSellersClockIn.Accounts.User
+  alias StreetSellersClockIn.ClockIn.ClockRecord
 
   @doc """
   Returns the list of users.
@@ -102,5 +103,12 @@ defmodule StreetSellersClockIn.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def get_clock_in_users do
+    users = from u in User,
+      join: c in ClockRecord, on: u.clock_record_id == c.id,
+      select: {u.id, c.id, c.planned_clock_out_time}
+    users |> Repo.all
   end
 end

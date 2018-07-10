@@ -9,6 +9,7 @@ defmodule StreetSellersClockInWeb.Router do
     pipe_through :api
 
     resources "/users", UserController, except: [:create]
+    get "/test", UserController, :test, as: :test
   end
 
   scope "/api/product", StreetSellersClockInWeb do
