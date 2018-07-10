@@ -18,6 +18,7 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
       "user_id" => user_id,
     }) do
 
+    clock_record_params = clock_record_params |> Converters.array_to_string("category_ids")
     with {:ok, %ClockRecord{} = clock_record} <- ClockIn.create_clock_record(clock_record_params) do
       user_params = %{
         "clock_record_id": clock_record |> Map.get(:id)
