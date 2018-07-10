@@ -3,6 +3,7 @@ defmodule StreetSellersClockInWeb.UserController do
 
   alias StreetSellersClockIn.Accounts
   alias StreetSellersClockIn.Accounts.User
+  alias StreetSellersClockIn.ClockIn
 
   action_fallback StreetSellersClockInWeb.FallbackController
 
@@ -46,7 +47,8 @@ defmodule StreetSellersClockInWeb.UserController do
   def test(conn, _) do
     users = Accounts.get_clock_in_users()
     IO.inspect users
-    planned_clock_out_times = users |> Enum.map(&(&1["planned_clock_out_time"]))
-    IO.inspect planned_clock_out_times
+    IO.inspect users
+      |> Enum.map(&(&1["clock_record_id"]))
+      |> Enum.map(fn(clock_record_id) -> ClockIn.clock_out(clock_record_id) end)
   end
 end

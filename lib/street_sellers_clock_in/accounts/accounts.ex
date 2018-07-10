@@ -38,7 +38,7 @@ defmodule StreetSellersClockIn.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user_by_attr!(attr), do: User |> Repo.get_by!(attr)
+  def get_user_by_attr!(attr), do: User |> Repo.get_by(attr)
 
   @doc """
   Creates a user.
@@ -105,21 +105,15 @@ defmodule StreetSellersClockIn.Accounts do
     User.changeset(user, %{})
   end
 
-  def get_clock_in_users do
+  def get_expired_users do
     now = NaiveDateTime.utc_now
-    # FIXME: fix it for real comparision `<`
     sub_clock_record = from(p_c in ClockRecord, where: p_c.planned_clock_out_time < ^now)
 
     users = from u in User,
       join: c in subquery(sub_clock_record) , on: u.clock_record_id == c.id,
       select: %{
-        "user" => u,
-        "clock_record" => c,
+        "clock_record_id" => c.id,
       }
     users |> Repo.all
-  end
-
-  def clock_out do
-
   end
 end
