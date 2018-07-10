@@ -18,20 +18,30 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
       "user_id" => user_id,
     }) do
 
-    clock_record_params = clock_record_params |> Converters.array_to_string("category_ids")
-    with {:ok, %ClockRecord{} = clock_record} <- ClockIn.create_clock_record(clock_record_params) do
-      user_params = %{
-        "clock_record_id": clock_record |> Map.get(:id)
-      }
-      user = Accounts.get_user!(user_id)
+    user = Accounts.get_user!(user_id)
 
-      with {:ok, _} <- Accounts.update_user(user, user_params) do
+    case user.clock_record_id do
+      nil ->
+        clock_record_params = clock_record_params |> Converters.array_to_string("category_ids")
+        with {:ok, %ClockRecord{} = clock_record} <- ClockIn.create_clock_record(clock_record_params) do
+          user_params = %{
+            "clock_record_id": clock_record |> Map.get(:id)
+          }
+
+          with {:ok, _} <- Accounts.update_user(user, user_params) do
+            conn
+            |> put_status(:created)
+            |> put_resp_header("location", clock_record_path(conn, :show, clock_record))
+            |> render("show.json", clock_record: clock_record)
+          end
+        end
+      _ ->
         conn
-        |> put_status(:created)
-        |> put_resp_header("location", clock_record_path(conn, :show, clock_record))
-        |> render("show.json", clock_record: clock_record)
-      end
+          |> put_status(:unprocessable_entity)
+          |> render(StreetSellersClockInWeb.ErrorView, :"422")
+          |> halt
     end
+
   end
 
   def show(conn, %{"id" => id}) do
