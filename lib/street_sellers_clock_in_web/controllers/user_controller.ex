@@ -3,7 +3,6 @@ defmodule StreetSellersClockInWeb.UserController do
 
   alias StreetSellersClockIn.Accounts
   alias StreetSellersClockIn.Accounts.User
-  alias StreetSellersClockIn.ClockIn
 
   action_fallback StreetSellersClockInWeb.FallbackController
 
