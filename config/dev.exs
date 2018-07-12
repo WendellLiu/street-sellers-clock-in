@@ -45,9 +45,10 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
   hostname: "localhost",
   pool_size: 10
 
+alias StreetSellersClockIn.Accounts.Helpers
 # configure scheduler
 config :street_sellers_clock_in, StreetSellersClockIn.Scheduler,
   jobs: [
-    # Every minute
-    # {"* * * * *", fn -> IO.puts "testtest" end},
+    # Every 30 minutes
+    {"*/30 * * * *", fn -> Helpers.clock_out_expired_record end},
   ]
