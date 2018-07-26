@@ -31,5 +31,8 @@ defmodule StreetSellersClockInWeb.Router do
     pipe_through :api
 
     post "/signup", UserController, :create
+    post "/login", LoginController, :create
+    post "/login/token", LoginController, :create_by_token
+    post "/login/invitation_code", LoginController, :create_by_invitatioin_code
   end
 end
