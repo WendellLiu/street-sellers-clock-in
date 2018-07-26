@@ -24,13 +24,13 @@ defmodule StreetSellersClockIn.Accounts.User do
     |> unique_constraint(:username)
     |> foreign_key_constraint(:clock_record_id)
     |> validate_required([:username, :alias, :password])
-    |> handle_password
+    |> handle_password(attrs)
   end
 
-  defp handle_password(profile) do
-    cond do
-      Map.has_key?(profile, "password") -> put_change(profile, :password, Password.hash_password(get_field(profile, :password)))
-      true -> profile
+  defp handle_password(profile, attrs) do
+    case Map.has_key?(attrs, "password") do
+      true -> put_change(profile, :password, Password.hash_password(Map.get(attrs, "password")))
+      false -> profile
     end
   end
 end
