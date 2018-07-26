@@ -70,4 +70,68 @@ defmodule StreetSellersClockIn.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
   end
+
+  describe "login_tokens" do
+    alias StreetSellersClockIn.Accounts.LoginToken
+
+    @valid_attrs %{expired_time: ~N[2010-04-17 14:00:00.000000], salt: "some salt", token: "some token"}
+    @update_attrs %{expired_time: ~N[2011-05-18 15:01:01.000000], salt: "some updated salt", token: "some updated token"}
+    @invalid_attrs %{expired_time: nil, salt: nil, token: nil}
+
+    def login_token_fixture(attrs \\ %{}) do
+      {:ok, login_token} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounts.create_login_token()
+
+      login_token
+    end
+
+    test "list_login_tokens/0 returns all login_tokens" do
+      login_token = login_token_fixture()
+      assert Accounts.list_login_tokens() == [login_token]
+    end
+
+    test "get_login_token!/1 returns the login_token with given id" do
+      login_token = login_token_fixture()
+      assert Accounts.get_login_token!(login_token.id) == login_token
+    end
+
+    test "create_login_token/1 with valid data creates a login_token" do
+      assert {:ok, %LoginToken{} = login_token} = Accounts.create_login_token(@valid_attrs)
+      assert login_token.expired_time == ~N[2010-04-17 14:00:00.000000]
+      assert login_token.salt == "some salt"
+      assert login_token.token == "some token"
+    end
+
+    test "create_login_token/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_login_token(@invalid_attrs)
+    end
+
+    test "update_login_token/2 with valid data updates the login_token" do
+      login_token = login_token_fixture()
+      assert {:ok, login_token} = Accounts.update_login_token(login_token, @update_attrs)
+      assert %LoginToken{} = login_token
+      assert login_token.expired_time == ~N[2011-05-18 15:01:01.000000]
+      assert login_token.salt == "some updated salt"
+      assert login_token.token == "some updated token"
+    end
+
+    test "update_login_token/2 with invalid data returns error changeset" do
+      login_token = login_token_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_login_token(login_token, @invalid_attrs)
+      assert login_token == Accounts.get_login_token!(login_token.id)
+    end
+
+    test "delete_login_token/1 deletes the login_token" do
+      login_token = login_token_fixture()
+      assert {:ok, %LoginToken{}} = Accounts.delete_login_token(login_token)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_login_token!(login_token.id) end
+    end
+
+    test "change_login_token/1 returns a login_token changeset" do
+      login_token = login_token_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_login_token(login_token)
+    end
+  end
 end
