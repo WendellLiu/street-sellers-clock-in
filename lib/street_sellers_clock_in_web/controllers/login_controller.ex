@@ -16,9 +16,12 @@ defmodule StreetSellersClockInWeb.LoginController do
     } = login_params
 
     with user when not is_nil(user) <- Accounts.get_user_by_attr!(%{username: username}) do
-      # FIXME: bug
-      hash = get_field(user, :password)
-      IO.puts(hash)
+      hash = Map.get(user, :password)
+
+      # case Password.check_password(password, hash) do
+      #   true ->
+      #   false ->
+      # end
 
     end
     # with {:ok, %LoginToken{} = login} <- Accounts.create_login(login_params) do

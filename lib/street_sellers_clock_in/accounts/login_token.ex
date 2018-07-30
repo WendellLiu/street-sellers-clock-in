@@ -16,6 +16,6 @@ defmodule StreetSellersClockIn.Accounts.LoginToken do
   def changeset(login_token, attrs) do
     login_token
     |> cast(attrs, [:token, :salt, :expired_time])
-    |> validate_required([:token, :salt, :expired_time])
+    |> validate_required([:token, :salt])
   end
 end
