@@ -1,4 +1,4 @@
-defmodule StreetSellersClockInWeb.LoginTokenView do
+defmodule StreetSellersClockInWeb.LoginView do
   use StreetSellersClockInWeb, :view
   alias StreetSellersClockInWeb.LoginTokenView
 

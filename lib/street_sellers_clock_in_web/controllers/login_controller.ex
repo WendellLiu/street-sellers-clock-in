@@ -28,16 +28,12 @@ defmodule StreetSellersClockInWeb.LoginController do
             user_id: user.id,
           }
           with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
-            IO.inspect login_token
+            conn
+            |> put_status(:created)
+            |> render("show.json", login_token: login_token)
           end
       end
     end
-    # with {:ok, %LoginToken{} = login} <- Accounts.create_login(login_params) do
-    #   conn
-    #   |> put_status(:created)
-    #   |> put_resp_header("location", login_path(conn, :show, login))
-    #   |> render("show.json", login: login)
-    # end
   end
 
   # def show(conn, %{"id" => id}) do
