@@ -31,4 +31,11 @@ defmodule Utils.Redis do
     conn = get_conn()
     command(conn, ["KEYS", pattern])
   end
+
+  # keys :: Array<key>
+  def del(keys) do
+    conn = get_conn()
+    IO.inspect keys
+    command(conn, Enum.concat(["DEL"], keys))
+  end
 end

@@ -24,4 +24,10 @@ defmodule Utils.Auth.LoginToken do
     |> login_token_as_key
     |> get
   end
+
+  def clear_all_login_tokens do
+    get_keys("login-token-*")
+    |> elem(1)
+    |> del
+  end
 end
