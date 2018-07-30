@@ -13,6 +13,8 @@ defmodule StreetSellersClockInWeb.LoginTokenView do
   def render("login_token.json", %{login_token: login_token}) do
     %{
       token: login_token.token,
-      expired_time: login_token.expired_time}
+      expired_time: login_token.expired_time,
+      user_id: login_token.user_id,
+    }
   end
 end
