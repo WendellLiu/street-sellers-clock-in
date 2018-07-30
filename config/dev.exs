@@ -52,3 +52,7 @@ config :street_sellers_clock_in, StreetSellersClockIn.Scheduler,
     # Every 30 minutes
     {"*/30 * * * *", fn -> Helpers.clock_out_expired_record end},
   ]
+
+config :redix,
+  host: "127.0.0.1",
+  port: "6379"

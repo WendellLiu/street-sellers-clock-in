@@ -42,7 +42,9 @@ defmodule StreetSellersClockIn.Mixfile do
       {:comeonin, "~> 4.0"},
       {:pbkdf2_elixir, "~> 0.12"},
       {:quantum, "~> 2.2"},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:redix, ">= 0.0.0"},
+      {:poison, "~> 3.1"},
     ]
   end
 

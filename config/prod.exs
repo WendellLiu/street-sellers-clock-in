@@ -34,6 +34,10 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
   port: System.get_env("POSTGRES_PORT"),
   pool_size: 15
 
+config :redix,
+  host: System.get_env("REDIS_HOSTNAME"),
+  port: System.get_env("REDIS_PORT")
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
