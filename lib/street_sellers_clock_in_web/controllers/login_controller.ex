@@ -28,6 +28,12 @@ defmodule StreetSellersClockInWeb.LoginController do
             user_id: user.id,
           }
           with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
+            token_info = %{
+              token: login_token.token,
+              user_id: login_token.user_id,
+              expired_time: login_token.expired_time,
+            }
+            LokginTokenUtils.cache_one_token(login_token.token, token_info)
             conn
             |> put_status(:created)
             |> render("show.json", login_token: login_token)
