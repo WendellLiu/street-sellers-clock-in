@@ -4,7 +4,6 @@ defmodule StreetSellersClockIn.Repo.Migrations.CreateLoginTokens do
   def change do
     create table(:login_tokens) do
       add :token, :string
-      add :salt, :string
       add :expired_time, :naive_datetime
       add :user_id, references(:users, on_delete: :nothing)
 

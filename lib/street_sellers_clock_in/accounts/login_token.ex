@@ -5,7 +5,6 @@ defmodule StreetSellersClockIn.Accounts.LoginToken do
 
   schema "login_tokens" do
     field :expired_time, :naive_datetime
-    field :salt, :string
     field :token, :string
     field :user_id, :id
 
@@ -15,7 +14,7 @@ defmodule StreetSellersClockIn.Accounts.LoginToken do
   @doc false
   def changeset(login_token, attrs) do
     login_token
-    |> cast(attrs, [:token, :salt, :expired_time])
-    |> validate_required([:token, :salt])
+    |> cast(attrs, [:token, :expired_time, :user_id])
+    |> validate_required([:token, :user_id])
   end
 end

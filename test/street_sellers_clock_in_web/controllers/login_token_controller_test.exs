@@ -4,9 +4,9 @@ defmodule StreetSellersClockInWeb.LoginTokenControllerTest do
   alias StreetSellersClockIn.Accounts
   alias StreetSellersClockIn.Accounts.LoginToken
 
-  @create_attrs %{expired_time: ~N[2010-04-17 14:00:00.000000], salt: "some salt", token: "some token"}
-  @update_attrs %{expired_time: ~N[2011-05-18 15:01:01.000000], salt: "some updated salt", token: "some updated token"}
-  @invalid_attrs %{expired_time: nil, salt: nil, token: nil}
+  @create_attrs %{expired_time: ~N[2010-04-17 14:00:00.000000], token: "some token"}
+  @update_attrs %{expired_time: ~N[2011-05-18 15:01:01.000000], token: "some updated token"}
+  @invalid_attrs %{expired_time: nil, token: nil}
 
   def fixture(:login_token) do
     {:ok, login_token} = Accounts.create_login_token(@create_attrs)
@@ -33,7 +33,6 @@ defmodule StreetSellersClockInWeb.LoginTokenControllerTest do
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
         "expired_time" => ~N[2010-04-17 14:00:00.000000],
-        "salt" => "some salt",
         "token" => "some token"}
     end
 
@@ -54,7 +53,6 @@ defmodule StreetSellersClockInWeb.LoginTokenControllerTest do
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
         "expired_time" => ~N[2011-05-18 15:01:01.000000],
-        "salt" => "some updated salt",
         "token" => "some updated token"}
     end
 

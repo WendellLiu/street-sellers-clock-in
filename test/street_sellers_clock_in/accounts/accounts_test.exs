@@ -74,9 +74,9 @@ defmodule StreetSellersClockIn.AccountsTest do
   describe "login_tokens" do
     alias StreetSellersClockIn.Accounts.LoginToken
 
-    @valid_attrs %{expired_time: ~N[2010-04-17 14:00:00.000000], salt: "some salt", token: "some token"}
-    @update_attrs %{expired_time: ~N[2011-05-18 15:01:01.000000], salt: "some updated salt", token: "some updated token"}
-    @invalid_attrs %{expired_time: nil, salt: nil, token: nil}
+    @valid_attrs %{expired_time: ~N[2010-04-17 14:00:00.000000], token: "some token"}
+    @update_attrs %{expired_time: ~N[2011-05-18 15:01:01.000000], token: "some updated token"}
+    @invalid_attrs %{expired_time: nil, token: nil}
 
     def login_token_fixture(attrs \\ %{}) do
       {:ok, login_token} =
@@ -100,7 +100,6 @@ defmodule StreetSellersClockIn.AccountsTest do
     test "create_login_token/1 with valid data creates a login_token" do
       assert {:ok, %LoginToken{} = login_token} = Accounts.create_login_token(@valid_attrs)
       assert login_token.expired_time == ~N[2010-04-17 14:00:00.000000]
-      assert login_token.salt == "some salt"
       assert login_token.token == "some token"
     end
 
@@ -113,7 +112,6 @@ defmodule StreetSellersClockIn.AccountsTest do
       assert {:ok, login_token} = Accounts.update_login_token(login_token, @update_attrs)
       assert %LoginToken{} = login_token
       assert login_token.expired_time == ~N[2011-05-18 15:01:01.000000]
-      assert login_token.salt == "some updated salt"
       assert login_token.token == "some updated token"
     end
 

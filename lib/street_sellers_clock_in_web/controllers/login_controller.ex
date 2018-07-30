@@ -1,11 +1,10 @@
 defmodule StreetSellersClockInWeb.LoginController do
   use StreetSellersClockInWeb, :controller
 
-  import Ecto.Changeset
   alias StreetSellersClockIn.Accounts
   alias StreetSellersClockIn.Accounts.LoginToken
   alias Utils.Auth.Password
-  alias Utils.Auth.LoginToken
+  alias Utils.Auth.LoginToken, as: LokginTokenUtils
 
   action_fallback StreetSellersClockInWeb.FallbackController
 
@@ -18,11 +17,20 @@ defmodule StreetSellersClockInWeb.LoginController do
     with user when not is_nil(user) <- Accounts.get_user_by_attr!(%{username: username}) do
       hash = Map.get(user, :password)
 
-      # case Password.check_password(password, hash) do
-      #   true ->
-      #   false ->
-      # end
+      case Password.check_password(password, hash) do
+        true ->
+          %{
+            token: token,
+          } = LokginTokenUtils.gen_token()
 
+          login_token_params = %{
+            token: token,
+            user_id: user.id,
+          }
+          with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
+            IO.inspect login_token
+          end
+      end
     end
     # with {:ok, %LoginToken{} = login} <- Accounts.create_login(login_params) do
     #   conn

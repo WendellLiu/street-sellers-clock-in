@@ -1,10 +1,11 @@
 defmodule Utils.Auth.LoginToken do
-  import Pbkdf2.Base
+  import Utils.Data.String
 
-  def gen_token(salt) do
-    current = DateTime.utc_now()
-    base = to_string(current)
+  def gen_token() do
+    token = random_string(20)
+    %{
+      token: token,
+    }
 
-    hash_password(base, salt)
   end
 end
