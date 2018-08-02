@@ -73,6 +73,11 @@ defmodule StreetSellersClockInWeb.LoginController do
         |> put_status(:unauthorized)
         |> render(StreetSellersClockInWeb.ErrorView, :"401")
         |> halt
+      {:error, _} ->
+        conn
+        |> put_status(:unauthorized)
+        |> render(StreetSellersClockInWeb.ErrorView, :"401")
+        |> halt
     end
 
   end
