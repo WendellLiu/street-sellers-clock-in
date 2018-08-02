@@ -38,8 +38,10 @@ defmodule StreetSellersClockInWeb.LoginController do
             |> put_status(:created)
             |> render("show.json", login_token: login_token)
           end
-        # TODO: error handling
-        false -> ""
+        false -> conn
+          |> put_status(:unauthorized)
+          |> render(StreetSellersClockInWeb.ErrorView, :"401")
+          |> halt
       end
     end
   end
