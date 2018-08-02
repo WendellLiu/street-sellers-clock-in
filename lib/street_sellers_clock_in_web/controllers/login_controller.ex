@@ -14,29 +14,36 @@ defmodule StreetSellersClockInWeb.LoginController do
       "password"=> password,
     } = login_params
 
-    with user when not is_nil(user) <- Accounts.get_user_by_attr!(%{username: username}) do
-      hash = Map.get(user, :password)
-
-      case Password.check_password(password, hash) do
+    with user <- Accounts.get_user_by_attr!(%{username: username}) do
+      case not is_nil(user) do
         true ->
-          %{
-            token: token,
-          } = LokginTokenUtils.gen_token()
+          hash = Map.get(user, :password)
 
-          login_token_params = %{
-            token: token,
-            user_id: user.id,
-          }
-          with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
-            token_info = %{
-              token: login_token.token,
-              user_id: login_token.user_id,
-              expired_time: login_token.expired_time,
-            }
-            LokginTokenUtils.cache_one_token(login_token.token, token_info)
-            conn
-            |> put_status(:created)
-            |> render("show.json", login_token: login_token)
+          case Password.check_password(password, hash) do
+            true ->
+              %{
+                token: token,
+              } = LokginTokenUtils.gen_token()
+
+              login_token_params = %{
+                token: token,
+                user_id: user.id,
+              }
+              with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
+                token_info = %{
+                  token: login_token.token,
+                  user_id: login_token.user_id,
+                  expired_time: login_token.expired_time,
+                }
+                LokginTokenUtils.cache_one_token(login_token.token, token_info)
+                conn
+                |> put_status(:created)
+                |> render("show.json", login_token: login_token)
+              end
+            false -> conn
+              |> put_status(:unauthorized)
+              |> render(StreetSellersClockInWeb.ErrorView, :"401")
+              |> halt
           end
         false -> conn
           |> put_status(:unauthorized)
