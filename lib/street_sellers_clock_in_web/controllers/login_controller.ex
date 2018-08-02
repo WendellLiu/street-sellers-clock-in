@@ -4,14 +4,14 @@ defmodule StreetSellersClockInWeb.LoginController do
   alias StreetSellersClockIn.Accounts
   alias StreetSellersClockIn.Accounts.LoginToken
   alias Utils.Auth.Password
-  alias Utils.Auth.LoginToken, as: LokginTokenUtils
+  alias Utils.Auth.LoginToken, as: LoginTokenUtils
 
   action_fallback StreetSellersClockInWeb.FallbackController
 
   def create(conn, %{"login" => login_params}) do
     %{
-      "username"=> username,
-      "password"=> password,
+      "username" => username,
+      "password" => password,
     } = login_params
 
     with user <- Accounts.get_user_by_attr!(%{username: username}) do
@@ -23,7 +23,7 @@ defmodule StreetSellersClockInWeb.LoginController do
             true ->
               %{
                 token: token,
-              } = LokginTokenUtils.gen_token()
+              } = LoginTokenUtils.gen_token()
 
               login_token_params = %{
                 token: token,
@@ -35,7 +35,7 @@ defmodule StreetSellersClockInWeb.LoginController do
                   user_id: login_token.user_id,
                   expired_time: login_token.expired_time,
                 }
-                LokginTokenUtils.cache_one_token(login_token.token, token_info)
+                LoginTokenUtils.cache_one_token(login_token.token, token_info)
                 conn
                 |> put_status(:created)
                 |> render("show.json", login_token: login_token)
@@ -53,8 +53,26 @@ defmodule StreetSellersClockInWeb.LoginController do
     end
   end
 
-  # def show(conn, %{"id" => id}) do
-  #   login = Accounts.get_login!(id)
-  #   render(conn, "show.json", login: login)
-  # end
+  def create_by_token(conn, %{"login" => login_params}) do
+    %{
+      "token" => token,
+    } = login_params
+
+    case LoginTokenUtils.get_info_from_cache(token) do
+      {:ok, login_token} when not is_nil(login_token) ->
+        login_token = %{
+          token: login_token["token"],
+          expired_time: login_token["expired_time"],
+          user_id: login_token["user_id"],
+        }
+        conn
+        |> put_status(:created)
+        |> render("show.json", login_token: login_token)
+    end
+
+  end
+
+  def create_by_invitatioin_code(conn) do
+
+  end
 end
