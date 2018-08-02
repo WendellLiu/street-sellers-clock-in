@@ -66,8 +66,13 @@ defmodule StreetSellersClockInWeb.LoginController do
           user_id: login_token["user_id"],
         }
         conn
-        |> put_status(:created)
+        |> put_status(:ok)
         |> render("show.json", login_token: login_token)
+      {:ok, nil} ->
+        conn
+        |> put_status(:unauthorized)
+        |> render(StreetSellersClockInWeb.ErrorView, :"401")
+        |> halt
     end
 
   end
