@@ -33,6 +33,6 @@ defmodule StreetSellersClockInWeb.Router do
     post "/signup", UserController, :create
     post "/login", LoginController, :create
     post "/login/token", LoginController, :create_by_token
-    post "/login/invitation_code", LoginController, :create_by_invitatioin_code
+    post "/login/invitation_code", LoginController, :create_by_invitation_code
   end
 end

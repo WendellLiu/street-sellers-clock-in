@@ -79,10 +79,13 @@ defmodule StreetSellersClockInWeb.LoginController do
         |> render(StreetSellersClockInWeb.ErrorView, :"401")
         |> halt
     end
-
   end
 
-  def create_by_invitatioin_code(conn) do
+  def create_by_invitation_code(conn, %{"login" => login_params}) do
+    %{
+      "invitation_code" => invitation_code,
+    } = login_params
+
 
   end
 end
