@@ -9,9 +9,18 @@ defmodule Utils.Redis do
     conn
   end
 
+  defp handel_get_return({:ok, value}) do
+    {:ok, Poison.decode!(value)}
+  end
+
+  defp handel_get_return({:error, value}) do
+    {:error, value}
+  end
+
   def get(key) do
-    conn = get_conn()
-    command(conn, ["GET", key])
+    get_conn()
+      |> command(["GET", key])
+      |> handel_get_return
   end
 
   def set(key, value) do
