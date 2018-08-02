@@ -9,6 +9,10 @@ defmodule Utils.Redis do
     conn
   end
 
+  defp handel_get_return({:ok, nil}) do
+    {:ok, nil}
+  end
+
   defp handel_get_return({:ok, value}) do
     {:ok, Poison.decode!(value)}
   end
