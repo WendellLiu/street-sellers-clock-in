@@ -88,7 +88,6 @@ defmodule StreetSellersClockInWeb.LoginController do
 
     with login_invitation_code <-
       Accounts.get_active_login_invitation_code_by_attr!(%{invitation_code: invitation_code}) do
-      IO.inspect login_invitation_code
       case not is_nil(login_invitation_code) do
         true ->
           %{
@@ -99,6 +98,7 @@ defmodule StreetSellersClockInWeb.LoginController do
             token: token,
             user_id: login_invitation_code.user_id,
           }
+          # TODO: deactive login invitation code
           with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
             token_info = %{
               token: login_token.token,

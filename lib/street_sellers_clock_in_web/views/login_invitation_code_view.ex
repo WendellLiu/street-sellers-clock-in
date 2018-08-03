@@ -15,6 +15,7 @@ defmodule StreetSellersClockInWeb.LoginInvitationCodeView do
       invitation_code: login_invitation_code.invitation_code,
       expired_time: login_invitation_code.expired_time,
       user_id: login_invitation_code.user_id,
+      is_active: login_invitation_code.is_active,
     }
   end
 end

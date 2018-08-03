@@ -246,7 +246,10 @@ defmodule StreetSellersClockIn.Accounts do
 
   def get_active_login_invitation_code_by_attr!(attr) do
     now = NaiveDateTime.utc_now
-    sub_login_invitation_code = from(p_c in LoginInvitationCode, where: p_c.expired_time > ^now)
+    sub_login_invitation_code = from(
+      l_i_c in LoginInvitationCode,
+      where: l_i_c.expired_time > ^now and l_i_c.is_active == true
+      )
 
     sub_login_invitation_code |> Repo.get_by(attr)
   end
