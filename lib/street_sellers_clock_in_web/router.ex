@@ -1,8 +1,10 @@
 defmodule StreetSellersClockInWeb.Router do
   use StreetSellersClockInWeb, :router
+  import StreetSellersClockInWeb.Plugs
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :token_auth
   end
 
   scope "/api", StreetSellersClockInWeb do
