@@ -16,7 +16,7 @@ config :street_sellers_clock_in, StreetSellersClockInWeb.Endpoint,
   render_errors: [view: StreetSellersClockInWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: StreetSellersClockIn.PubSub,
            adapter: Phoenix.PubSub.PG2],
-  invitation_code_length: 6
+  invitation_code_length: 5
 
 # Configures Elixir's Logger
 config :logger, :console,
