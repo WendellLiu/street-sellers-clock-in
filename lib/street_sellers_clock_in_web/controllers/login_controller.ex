@@ -86,6 +86,36 @@ defmodule StreetSellersClockInWeb.LoginController do
       "invitation_code" => invitation_code,
     } = login_params
 
+    with login_invitation_code <-
+      Accounts.get_active_login_invitation_code_by_attr!(%{invitation_code: invitation_code}) do
+      IO.inspect login_invitation_code
+      case not is_nil(login_invitation_code) do
+        true ->
+          %{
+            token: token,
+          } = LoginTokenUtils.gen_token()
 
+          login_token_params = %{
+            token: token,
+            user_id: login_invitation_code.user_id,
+          }
+          with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
+            token_info = %{
+              token: login_token.token,
+              user_id: login_token.user_id,
+              expired_time: login_token.expired_time,
+            }
+            LoginTokenUtils.cache_one_token(login_token.token, token_info)
+            conn
+            |> put_status(:created)
+            |> render("show.json", login_token: login_token)
+          end
+
+        false ->conn
+          |> put_status(:unauthorized)
+          |> render(StreetSellersClockInWeb.ErrorView, :"401")
+          |> halt
+      end
+    end
   end
 end
