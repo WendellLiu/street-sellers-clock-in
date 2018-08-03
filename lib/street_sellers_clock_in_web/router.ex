@@ -11,6 +11,8 @@ defmodule StreetSellersClockInWeb.Router do
     resources "/users", UserController, except: [:create] do
       post "/clock_in", ClockRecordController, :create, as: :user_clock_in
     end
+
+    resources "/login_invitation_code", LoginInvitationCodeController
   end
 
   scope "/api/product", StreetSellersClockInWeb do

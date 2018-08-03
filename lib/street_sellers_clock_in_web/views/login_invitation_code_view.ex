@@ -13,6 +13,8 @@ defmodule StreetSellersClockInWeb.LoginInvitationCodeView do
   def render("login_invitation_code.json", %{login_invitation_code: login_invitation_code}) do
     %{id: login_invitation_code.id,
       invitation_code: login_invitation_code.invitation_code,
-      expired_time: login_invitation_code.expired_time}
+      expired_time: login_invitation_code.expired_time,
+      user_id: login_invitation_code.user_id,
+    }
   end
 end

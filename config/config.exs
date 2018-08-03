@@ -15,7 +15,8 @@ config :street_sellers_clock_in, StreetSellersClockInWeb.Endpoint,
   secret_key_base: "wiJwSHJ9YxqlYB6ToKJEYmHjPI/1uD9BwzOKG0ORYxMnHA97seZ7Ou4uqyj7tGUg",
   render_errors: [view: StreetSellersClockInWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: StreetSellersClockIn.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+           adapter: Phoenix.PubSub.PG2],
+  invitation_code_length: 6
 
 # Configures Elixir's Logger
 config :logger, :console,

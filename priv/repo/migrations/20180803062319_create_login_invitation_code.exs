@@ -10,6 +10,7 @@ defmodule StreetSellersClockIn.Repo.Migrations.CreateLoginInvitationCode do
       timestamps()
     end
 
-    create index(:login_invitation_code, [:user_id])
+    create index(:login_invitation_code, [:user_id, :invitation_code])
+    create unique_index(:login_invitation_code, [:invitation_code])
   end
 end

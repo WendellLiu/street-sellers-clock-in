@@ -14,7 +14,7 @@ defmodule StreetSellersClockIn.Accounts.LoginInvitationCode do
   @doc false
   def changeset(login_invitation_code, attrs) do
     login_invitation_code
-    |> cast(attrs, [:invitation_code, :expired_time])
-    |> validate_required([:invitation_code, :expired_time])
+    |> cast(attrs, [:invitation_code, :expired_time, :user_id])
+    |> validate_required([:invitation_code, :expired_time, :user_id])
   end
 end
