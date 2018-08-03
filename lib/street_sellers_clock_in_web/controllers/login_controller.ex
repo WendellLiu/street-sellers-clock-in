@@ -98,7 +98,10 @@ defmodule StreetSellersClockInWeb.LoginController do
             token: token,
             user_id: login_invitation_code.user_id,
           }
-          # TODO: deactive login invitation code
+
+          login_invitation_code_params = %{"is_active"=> false}
+          Accounts.update_login_invitation_code(login_invitation_code, login_invitation_code_params)
+
           with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
             token_info = %{
               token: login_token.token,
