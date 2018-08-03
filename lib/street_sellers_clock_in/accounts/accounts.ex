@@ -212,4 +212,100 @@ defmodule StreetSellersClockIn.Accounts do
   def change_login_token(%LoginToken{} = login_token) do
     LoginToken.changeset(login_token, %{})
   end
+
+  alias StreetSellersClockIn.Accounts.LoginInvitationCode
+
+  @doc """
+  Returns the list of login_invitation_code.
+
+  ## Examples
+
+      iex> list_login_invitation_code()
+      [%LoginInvitationCode{}, ...]
+
+  """
+  def list_login_invitation_code do
+    Repo.all(LoginInvitationCode)
+  end
+
+  @doc """
+  Gets a single login_invitation_code.
+
+  Raises `Ecto.NoResultsError` if the Login invitation code does not exist.
+
+  ## Examples
+
+      iex> get_login_invitation_code!(123)
+      %LoginInvitationCode{}
+
+      iex> get_login_invitation_code!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_login_invitation_code!(id), do: Repo.get!(LoginInvitationCode, id)
+
+  @doc """
+  Creates a login_invitation_code.
+
+  ## Examples
+
+      iex> create_login_invitation_code(%{field: value})
+      {:ok, %LoginInvitationCode{}}
+
+      iex> create_login_invitation_code(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_login_invitation_code(attrs \\ %{}) do
+    %LoginInvitationCode{}
+    |> LoginInvitationCode.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a login_invitation_code.
+
+  ## Examples
+
+      iex> update_login_invitation_code(login_invitation_code, %{field: new_value})
+      {:ok, %LoginInvitationCode{}}
+
+      iex> update_login_invitation_code(login_invitation_code, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_login_invitation_code(%LoginInvitationCode{} = login_invitation_code, attrs) do
+    login_invitation_code
+    |> LoginInvitationCode.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a LoginInvitationCode.
+
+  ## Examples
+
+      iex> delete_login_invitation_code(login_invitation_code)
+      {:ok, %LoginInvitationCode{}}
+
+      iex> delete_login_invitation_code(login_invitation_code)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_login_invitation_code(%LoginInvitationCode{} = login_invitation_code) do
+    Repo.delete(login_invitation_code)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking login_invitation_code changes.
+
+  ## Examples
+
+      iex> change_login_invitation_code(login_invitation_code)
+      %Ecto.Changeset{source: %LoginInvitationCode{}}
+
+  """
+  def change_login_invitation_code(%LoginInvitationCode{} = login_invitation_code) do
+    LoginInvitationCode.changeset(login_invitation_code, %{})
+  end
 end
