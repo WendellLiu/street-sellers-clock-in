@@ -22,14 +22,14 @@ defmodule StreetSellersClockInWeb.Plugs do
             now = NaiveDateTime.utc_now
             expired_time = info["expired_time"]
             cond do
-              expired_time == nil -> IO.inspect info
-              (expired_time |> NaiveDateTime.from_iso8601) >= now -> IO.inspect info
+              expired_time == nil -> conn
+              (expired_time |> NaiveDateTime.from_iso8601) >= now -> conn
               true -> error_conn(conn)
             end
         end
     end
-    conn
   end
+
   defp error_conn(conn) do
     conn
       |> Plug.Conn.put_status(:unauthorized)

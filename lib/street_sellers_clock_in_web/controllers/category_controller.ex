@@ -7,6 +7,7 @@ defmodule StreetSellersClockInWeb.CategoryController do
   action_fallback StreetSellersClockInWeb.FallbackController
 
   def index(conn, _params) do
+    IO.puts "get categories"
     product_categories = Product.list_product_categories()
     render(conn, "index.json", product_categories: product_categories)
   end
