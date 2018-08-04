@@ -28,8 +28,6 @@ defmodule StreetSellersClockInWeb.LoginController do
               login_token_params = %{
                 token: token,
                 user_id: user.id,
-                # FIXME: remove the line
-                expired_time: NaiveDateTime.utc_now,
               }
 
               with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do

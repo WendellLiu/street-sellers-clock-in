@@ -1,5 +1,4 @@
 defmodule StreetSellersClockInWeb.Plugs do
-  use StreetSellersClockInWeb, :controller
   import Utils.Auth.LoginToken
 
   def token_auth(conn, _) do
@@ -20,10 +19,11 @@ defmodule StreetSellersClockInWeb.Plugs do
         case token_info do
           {:ok, nil} -> error_conn(conn)
           {:ok, info} ->
-            now = DateTime.utc_now
-            expired_time = info["expired_time"] |> NaiveDateTime.from_iso8601
+            now = NaiveDateTime.utc_now
+            expired_time = info["expired_time"]
             cond do
-              expired_time == nil or expired_time >= now  -> IO.inspect info
+              expired_time == nil -> IO.inspect info
+              (expired_time |> NaiveDateTime.from_iso8601) >= now -> IO.inspect info
               true -> error_conn(conn)
             end
         end
@@ -32,8 +32,8 @@ defmodule StreetSellersClockInWeb.Plugs do
   end
   defp error_conn(conn) do
     conn
-      |> put_status(:unauthorized)
-      |> render(StreetSellersClockInWeb.ErrorView, :"401")
-      |> halt
+      |> Plug.Conn.put_status(:unauthorized)
+      |> Phoenix.Controller.render(StreetSellersClockInWeb.ErrorView, :"401")
+      |> Plug.Conn.halt
   end
 end
