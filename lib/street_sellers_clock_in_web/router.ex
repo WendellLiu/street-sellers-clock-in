@@ -24,7 +24,13 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api/product", StreetSellersClockInWeb do
     pipe_through :protected_api
 
-    resources "/categories", CategoryController
+    resources "/categories", CategoryController, except: [:index, :show]
+  end
+
+  scope "/api/product", StreetSellersClockInWeb do
+    pipe_through :api
+
+    resources "/categories", CategoryController, only: [:index, :show]
   end
 
   scope "/api/clock_in", StreetSellersClockInWeb do
