@@ -23,6 +23,14 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
 
+alias StreetSellersClockIn.Accounts.Helpers
+# configure scheduler
+config :street_sellers_clock_in, StreetSellersClockIn.Scheduler,
+  jobs: [
+    # Every 30 minutes
+    {"*/30 * * * *", fn -> Helpers.clock_out_expired_record end},
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

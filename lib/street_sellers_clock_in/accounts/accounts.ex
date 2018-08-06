@@ -148,6 +148,16 @@ defmodule StreetSellersClockIn.Accounts do
   """
   def get_login_token!(id), do: Repo.get!(LoginToken, id)
 
+  def get_active_login_token!() do
+    now = NaiveDateTime.utc_now
+    sub_login_token = from(
+      l_t in LoginToken,
+      where: l_t.expired_time > ^now or is_nil(l_t.expired_time)
+      )
+
+    sub_login_token |> Repo.all()
+  end
+
   @doc """
   Creates a login_token.
 
