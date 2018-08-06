@@ -1,5 +1,6 @@
 defmodule StreetSellersClockInWeb.Plugs do
   import Utils.Auth.LoginToken
+  import Logger, only: [debug: 1]
 
   def token_auth(conn, _) do
     %Plug.Conn{
@@ -10,21 +11,30 @@ defmodule StreetSellersClockInWeb.Plugs do
       |> Enum.find(fn {key, _} -> key == "authorization" end)
 
     case token_info do
-      nil -> error_conn(conn)
+      nil ->
+        debug "bear token did not exist in header"
+        error_conn(conn)
       _ ->
+
         token_info = token_info
         |> elem(1)
+        |> (fn(str) -> Regex.run(~r/Bear (.*)/, str) end).()
+        |> Enum.at(1)
         |> get_info_from_cache
 
         case token_info do
-          {:ok, nil} -> error_conn(conn)
+          {:ok, nil} ->
+            debug "not contain this token"
+            error_conn(conn)
           {:ok, info} ->
             now = NaiveDateTime.utc_now
             expired_time = info["expired_time"]
             cond do
               expired_time == nil -> conn
               (expired_time |> NaiveDateTime.from_iso8601) >= now -> conn
-              true -> error_conn(conn)
+              true ->
+                debug "invalid token"
+                error_conn(conn)
             end
         end
     end
