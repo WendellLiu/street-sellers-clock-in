@@ -29,7 +29,7 @@ config :street_sellers_clock_in, StreetSellersClockIn.Scheduler,
   jobs: [
     # Every 30 minutes
     {"*/30 * * * *", fn -> Helpers.clock_out_expired_record end},
-    {"*/60 * * * *", fn -> StreetSellersClockIn.StartupTask.warm end},
+    {"*/30 * * * *", fn -> StreetSellersClockIn.StartupTask.warm end},
   ]
 
 # Import environment specific config. This must remain at the bottom
