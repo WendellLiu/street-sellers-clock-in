@@ -45,6 +45,9 @@ defmodule Utils.Redis do
     command(conn, ["KEYS", pattern])
   end
 
+  def del([]) do
+    {:ok, 0}
+  end
   # keys :: Array<key>
   def del(keys) do
     conn = get_conn()
