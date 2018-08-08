@@ -9,7 +9,7 @@ import StreetSellersClockIn.Accounts.Helpers
 
     # Token Cacheing
     info "warming the token cache"
-    clear_all_login_tokens()
+    clear_all_login_tokens_from_cache()
     cache_active_token()
 
     info "finished warming the cache, shutting down"
