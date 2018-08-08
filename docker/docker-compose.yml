@@ -8,6 +8,12 @@ services:
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres
+  redis:
+    image: redis:4.0.10
+    restart: always
+    env_file:
+     - $PWD/docker/.env
+    container_name: ssci_redis
   api_server:
     build:
       context: $PWD
@@ -20,5 +26,6 @@ services:
       - "127.0.0.1:${PORT:-4001}:${PORT:-4001}"
     links:
       - postgres:postgres_db
+      - redis:redis
     restart: on-failure
     container_name: ssci_api_server
