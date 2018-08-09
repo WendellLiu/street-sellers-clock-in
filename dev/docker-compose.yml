@@ -16,7 +16,8 @@ services:
     container_name: ssci_redis
   api_server:
     build:
-      image: wendellliu/street-sellers-clock-in
+      context: $PWD
+      dockerfile: ./Dockerfile
       args:
         - MIX_ENV=prod
     env_file:
