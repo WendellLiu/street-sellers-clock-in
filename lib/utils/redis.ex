@@ -1,11 +1,11 @@
 defmodule Utils.Redis do
   import Redix
 
-  @host Application.get_env(:redix, :host)
-  @port String.to_integer(Application.get_env(:redix, :port))
-
   defp get_conn do
-    {:ok, conn} = start_link(host: @host, port: @port)
+    {:ok, conn} = start_link(
+      host: Application.get_env(:redix, :host),
+      port: String.to_integer(Application.get_env(:redix, :port)),
+    )
     conn
   end
 
