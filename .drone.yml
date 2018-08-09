@@ -4,3 +4,5 @@ pipeline:
     repo: wendellliu/street-sellers-clock-in
     dockerfile: Dockerfile
     secrets: [ docker_username, docker_password ]
+    build_args:
+      - MIX_ENV=prod
