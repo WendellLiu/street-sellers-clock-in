@@ -6,3 +6,4 @@ pipeline:
     secrets: [ docker_username, docker_password ]
     build_args:
       - MIX_ENV=prod
+    tags: latest
