@@ -17,7 +17,7 @@ services:
   api_server:
     build:
       context: $PWD
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./Dockerfile
       args:
         - MIX_ENV=prod
     env_file:
