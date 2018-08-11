@@ -19,4 +19,4 @@ erl_crash.dump
 postgres/
 
 # secret
-docker/.env
+deploy/.env

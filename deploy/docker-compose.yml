@@ -23,8 +23,5 @@ services:
       - $PWD/docker/.env
     ports:
       - "127.0.0.1:${PORT:-4001}:${PORT:-4001}"
-    links:
-      - postgres:postgres_db
-      - redis:redis
     restart: on-failure
     container_name: ssci_api_server
