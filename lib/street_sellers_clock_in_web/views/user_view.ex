@@ -18,6 +18,7 @@ defmodule StreetSellersClockInWeb.UserView do
       email: user.email,
       memo: user.memo,
       clock_record_id: user.clock_record_id,
+      permission: user.permission,
     }
   end
 end

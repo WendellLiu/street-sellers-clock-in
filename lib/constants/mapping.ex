@@ -4,5 +4,11 @@ defmodule Constants.Mapping do
     CLOCK_IN: 1,
   }
 
-  def clock_record_status_mapping, do: @clock_record_status_mapping 
+  @user_permission %{
+    ADMIN: 0,
+    SELLER: 10,
+  }
+
+  def clock_record_status_mapping, do: @clock_record_status_mapping
+  def user_permission, do: @user_permission
 end

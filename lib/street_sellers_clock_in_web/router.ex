@@ -12,9 +12,15 @@ defmodule StreetSellersClockInWeb.Router do
   end
 
   scope "/api", StreetSellersClockInWeb do
+    pipe_through :api
+
+    resources "/users", UserController, only: [:index, :show]
+  end
+
+  scope "/api", StreetSellersClockInWeb do
     pipe_through :protected_api
 
-    resources "/users", UserController, except: [:create] do
+    resources "/users", UserController, except: [:create, :index, :show] do
       post "/clock_in", ClockRecordController, :create, as: :user_clock_in
     end
 
