@@ -9,6 +9,8 @@ defmodule StreetSellersClockIn.Accounts do
   alias StreetSellersClockIn.Accounts.User
   alias StreetSellersClockIn.ClockIn.ClockRecord
 
+  alias Utils.Data.Converters
+
   @doc """
   Returns the list of users.
 
@@ -38,7 +40,7 @@ defmodule StreetSellersClockIn.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user_by_attr!(attr), do: User |> Repo.get_by(attr)
+  def get_user_by_attr!(attr), do: User |> Repo.get_by!(attr)
 
   @doc """
   Creates a user.
@@ -147,6 +149,11 @@ defmodule StreetSellersClockIn.Accounts do
 
   """
   def get_login_token!(id), do: Repo.get!(LoginToken, id)
+
+  def get_multi_login_token_by_attr!(attr) do
+    keyword = Converters.map_to_keyword_list(attr)
+    from(l_t in LoginToken, where: ^keyword) |> Repo.all
+  end
 
   def get_active_login_token!() do
     now = NaiveDateTime.utc_now
@@ -261,7 +268,7 @@ defmodule StreetSellersClockIn.Accounts do
       where: l_i_c.expired_time > ^now and l_i_c.is_active == true
       )
 
-    sub_login_invitation_code |> Repo.get_by(attr)
+    sub_login_invitation_code |> Repo.get_by!(attr)
   end
   @doc """
   Creates a login_invitation_code.

@@ -18,4 +18,8 @@ defmodule Utils.Data.Converters do
         nil -> str
     end
   end
+
+  def map_to_keyword_list(m) do
+    Enum.map(m, fn {key, value} -> {:"#{key}", value} end)
+  end
 end
