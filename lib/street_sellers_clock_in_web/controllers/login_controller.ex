@@ -1,10 +1,13 @@
 defmodule StreetSellersClockInWeb.LoginController do
   use StreetSellersClockInWeb, :controller
 
-  alias StreetSellersClockIn.Accounts
+  # TODO: remove token util
   alias StreetSellersClockIn.Accounts.LoginToken
-  alias Utils.Auth.Password
   alias Utils.Auth.LoginToken, as: LoginTokenUtils
+
+  alias StreetSellersClockIn.Accounts
+  alias Utils.Auth.Password
+  alias StreetSellersClockIn.Guardian
 
   action_fallback StreetSellersClockInWeb.FallbackController
 
@@ -21,26 +24,16 @@ defmodule StreetSellersClockInWeb.LoginController do
 
           case Password.check_password(password, hash) do
             true ->
-              %{
-                token: token,
-              } = LoginTokenUtils.gen_token()
+              {:ok, token, claims}  = Guardian.encode_and_sign(user)
 
-              login_token_params = %{
+              login = %{
                 token: token,
                 user_id: user.id,
               }
 
-              with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
-                token_info = %{
-                  token: login_token.token,
-                  user_id: login_token.user_id,
-                  expired_time: login_token.expired_time,
-                }
-                LoginTokenUtils.cache_one_token(login_token.token, token_info)
-                conn
-                |> put_status(:created)
-                |> render("show.json", login_token: login_token)
-              end
+              conn
+              |> put_status(:created)
+              |> render("show.json", login: login)
             false -> conn
               |> put_status(:unauthorized)
               |> render(StreetSellersClockInWeb.ErrorView, :"401")
