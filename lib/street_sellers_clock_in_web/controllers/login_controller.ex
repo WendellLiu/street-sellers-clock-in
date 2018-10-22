@@ -24,7 +24,7 @@ defmodule StreetSellersClockInWeb.LoginController do
 
           case Password.check_password(password, hash) do
             true ->
-              {:ok, token, claims}  = Guardian.encode_and_sign(user)
+              {:ok, token, claims}  = Guardian.encode_and_sign(user, %{permission: user.permission})
 
               login = %{
                 token: token,
