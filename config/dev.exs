@@ -48,3 +48,6 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
 config :redix,
   host: "127.0.0.1",
   port: "6379"
+
+import_config "dev.secret.exs"
+
