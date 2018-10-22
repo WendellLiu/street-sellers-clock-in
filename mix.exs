@@ -45,6 +45,7 @@ defmodule StreetSellersClockIn.Mixfile do
       {:timex, "~> 3.0"},
       {:redix, ">= 0.0.0"},
       {:poison, "~> 3.1"},
+      {:guardian, "~> 1.0"},
     ]
   end
 
