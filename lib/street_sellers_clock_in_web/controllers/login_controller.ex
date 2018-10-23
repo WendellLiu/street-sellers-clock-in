@@ -47,34 +47,6 @@ defmodule StreetSellersClockInWeb.LoginController do
     end
   end
 
-  def create_by_token(conn, %{"login" => login_params}) do
-    %{
-      "token" => token,
-    } = login_params
-
-    case LoginTokenUtils.get_info_from_cache(token) do
-      {:ok, login_token} when not is_nil(login_token) ->
-        login_token = %{
-          token: login_token["token"],
-          expired_time: login_token["expired_time"],
-          user_id: login_token["user_id"],
-        }
-        conn
-        |> put_status(:ok)
-        |> render("show.json", login_token: login_token)
-      {:ok, nil} ->
-        conn
-        |> put_status(:unauthorized)
-        |> render(StreetSellersClockInWeb.ErrorView, :"401")
-        |> halt
-      {:error, _} ->
-        conn
-        |> put_status(:unauthorized)
-        |> render(StreetSellersClockInWeb.ErrorView, :"401")
-        |> halt
-    end
-  end
-
   def create_by_invitation_code(conn, %{"login" => login_params}) do
     %{
       "invitation_code" => invitation_code,
