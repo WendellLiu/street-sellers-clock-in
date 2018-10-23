@@ -33,6 +33,14 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
   port: System.get_env("POSTGRES_PORT"),
   pool_size: 15
 
+config :street_sellers_clock_in, StreetSellersClockIn.Guardian,
+  issuer: System.get_env("WEB_API_SERVER_SECRET"),
+  secret_key: "Secret key. You can use `mix guardian.gen.secret` to get one",
+  token_ttl: %{
+    "access" => {3, :days},
+    "refresh" => {52, :weeks}
+  }
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

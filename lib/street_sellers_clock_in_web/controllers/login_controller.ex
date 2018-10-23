@@ -20,10 +20,14 @@ defmodule StreetSellersClockInWeb.LoginController do
 
           case Password.check_password(password, hash) do
             true ->
-              {:ok, token, _} = Guardian.encode_and_sign(user, %{permission: user.permission})
+              {:ok, access_token, _} =
+                Guardian.encode_and_sign(user, %{permission: user.permission})
+
+              {:ok, refresh_token, _} = Guardian.encode_and_sign(user, %{}, token_type: "refresh")
 
               login = %{
-                token: token,
+                access_token: access_token,
+                refresh_token: refresh_token,
                 user_id: user.id
               }
 
@@ -61,10 +65,14 @@ defmodule StreetSellersClockInWeb.LoginController do
           } = login_invitation_code
 
           with user <- Accounts.get_user!(user_id) do
-            {:ok, token, _} = Guardian.encode_and_sign(user, %{permission: user.permission})
+            {:ok, access_token, _} =
+              Guardian.encode_and_sign(user, %{permission: user.permission})
+
+            {:ok, refresh_token, _} = Guardian.encode_and_sign(user, %{}, token_type: "refresh")
 
             login = %{
-              token: token,
+              access_token: access_token,
+              refresh_token: refresh_token,
               user_id: user.id
             }
 
