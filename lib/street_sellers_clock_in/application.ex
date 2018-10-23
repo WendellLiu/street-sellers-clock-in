@@ -5,18 +5,15 @@ defmodule StreetSellersClockIn.Application do
   # for more information on OTP Applications
   def start(_type, _args) do
     import Supervisor.Spec
-    alias StreetSellersClockIn.StartupTask
 
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
       supervisor(StreetSellersClockIn.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(StreetSellersClockInWeb.Endpoint, []),
+      supervisor(StreetSellersClockInWeb.Endpoint, [])
       # Start your own worker by calling: StreetSellersClockIn.Worker.start_link(arg1, arg2, arg3)
       # worker(StreetSellersClockIn.Worker, [arg1, arg2, arg3]),
-      worker(StreetSellersClockIn.Scheduler, []),
-      worker(Task, [&StartupTask.warm/0], restart: :temporary)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
