@@ -19,7 +19,6 @@ defmodule StreetSellersClockInWeb.LoginInvitationCodeController do
           "invitation_code",
           random_number_string(invitation_code_length)
         )
-    IO.inspect login_invitation_code_params
     with {:ok, %LoginInvitationCode{} = login_invitation_code} <- Accounts.create_login_invitation_code(login_invitation_code_params) do
       conn
       |> put_status(:created)
