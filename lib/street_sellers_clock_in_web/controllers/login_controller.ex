@@ -1,20 +1,16 @@
 defmodule StreetSellersClockInWeb.LoginController do
   use StreetSellersClockInWeb, :controller
 
-  # TODO: remove token util
-  alias StreetSellersClockIn.Accounts.LoginToken
-  alias Utils.Auth.LoginToken, as: LoginTokenUtils
-
   alias StreetSellersClockIn.Accounts
   alias Utils.Auth.Password
   alias StreetSellersClockIn.Guardian
 
-  action_fallback StreetSellersClockInWeb.FallbackController
+  action_fallback(StreetSellersClockInWeb.FallbackController)
 
   def create(conn, %{"login" => login_params}) do
     %{
       "username" => username,
-      "password" => password,
+      "password" => password
     } = login_params
 
     with user <- Accounts.get_user_by_attr!(%{username: username}) do
@@ -24,22 +20,26 @@ defmodule StreetSellersClockInWeb.LoginController do
 
           case Password.check_password(password, hash) do
             true ->
-              {:ok, token, claims}  = Guardian.encode_and_sign(user, %{permission: user.permission})
+              {:ok, token, _} = Guardian.encode_and_sign(user, %{permission: user.permission})
 
               login = %{
                 token: token,
-                user_id: user.id,
+                user_id: user.id
               }
 
               conn
               |> put_status(:created)
               |> render("show.json", login: login)
-            false -> conn
+
+            false ->
+              conn
               |> put_status(:unauthorized)
               |> render(StreetSellersClockInWeb.ErrorView, :"401")
               |> halt
           end
-        false -> conn
+
+        false ->
+          conn
           |> put_status(:unauthorized)
           |> render(StreetSellersClockInWeb.ErrorView, :"401")
           |> halt
@@ -49,38 +49,39 @@ defmodule StreetSellersClockInWeb.LoginController do
 
   def create_by_invitation_code(conn, %{"login" => login_params}) do
     %{
-      "invitation_code" => invitation_code,
+      "invitation_code" => invitation_code
     } = login_params
 
     with login_invitation_code <-
-      Accounts.get_active_login_invitation_code_by_attr!(%{invitation_code: invitation_code}) do
+           Accounts.get_active_login_invitation_code_by_attr!(%{invitation_code: invitation_code}) do
       case not is_nil(login_invitation_code) do
         true ->
           %{
-            token: token,
-          } = LoginTokenUtils.gen_token()
+            user_id: user_id
+          } = login_invitation_code
 
-          login_token_params = %{
-            token: token,
-            user_id: login_invitation_code.user_id,
-          }
+          with user <- Accounts.get_user!(user_id) do
+            {:ok, token, _} = Guardian.encode_and_sign(user, %{permission: user.permission})
 
-          login_invitation_code_params = %{"is_active"=> false}
-          Accounts.update_login_invitation_code(login_invitation_code, login_invitation_code_params)
-
-          with {:ok, %LoginToken{} = login_token} <- Accounts.create_login_token(login_token_params) do
-            token_info = %{
-              token: login_token.token,
-              user_id: login_token.user_id,
-              expired_time: login_token.expired_time,
+            login = %{
+              token: token,
+              user_id: user.id
             }
-            LoginTokenUtils.cache_one_token(login_token.token, token_info)
+
+            login_invitation_code_params = %{"is_active" => false}
+
+            Accounts.update_login_invitation_code(
+              login_invitation_code,
+              login_invitation_code_params
+            )
+
             conn
             |> put_status(:created)
-            |> render("show.json", login_token: login_token)
+            |> render("show.json", login: login)
           end
 
-        false ->conn
+        false ->
+          conn
           |> put_status(:unauthorized)
           |> render(StreetSellersClockInWeb.ErrorView, :"401")
           |> halt

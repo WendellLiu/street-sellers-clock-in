@@ -108,15 +108,19 @@ defmodule StreetSellersClockIn.Accounts do
   end
 
   def get_expired_users do
-    now = NaiveDateTime.utc_now
+    now = NaiveDateTime.utc_now()
     sub_clock_record = from(p_c in ClockRecord, where: p_c.planned_clock_out_time < ^now)
 
-    users = from u in User,
-      join: c in subquery(sub_clock_record) , on: u.clock_record_id == c.id,
-      select: %{
-        "clock_record_id" => c.id,
-      }
-    users |> Repo.all
+    users =
+      from(u in User,
+        join: c in subquery(sub_clock_record),
+        on: u.clock_record_id == c.id,
+        select: %{
+          "clock_record_id" => c.id
+        }
+      )
+
+    users |> Repo.all()
   end
 
   alias StreetSellersClockIn.Accounts.LoginToken
@@ -152,14 +156,16 @@ defmodule StreetSellersClockIn.Accounts do
 
   def get_multi_login_token_by_attr!(attr) do
     keyword = Converters.map_to_keyword_list(attr)
-    from(l_t in LoginToken, where: ^keyword) |> Repo.all
+    from(l_t in LoginToken, where: ^keyword) |> Repo.all()
   end
 
   def get_active_login_token!() do
-    now = NaiveDateTime.utc_now
-    sub_login_token = from(
-      l_t in LoginToken,
-      where: l_t.expired_time > ^now or is_nil(l_t.expired_time)
+    now = NaiveDateTime.utc_now()
+
+    sub_login_token =
+      from(
+        l_t in LoginToken,
+        where: l_t.expired_time > ^now or is_nil(l_t.expired_time)
       )
 
     sub_login_token |> Repo.all()
@@ -262,14 +268,17 @@ defmodule StreetSellersClockIn.Accounts do
   def get_login_invitation_code!(id), do: Repo.get!(LoginInvitationCode, id)
 
   def get_active_login_invitation_code_by_attr!(attr) do
-    now = NaiveDateTime.utc_now
-    sub_login_invitation_code = from(
-      l_i_c in LoginInvitationCode,
-      where: l_i_c.expired_time > ^now and l_i_c.is_active == true
+    now = NaiveDateTime.utc_now()
+
+    sub_login_invitation_code =
+      from(
+        l_i_c in LoginInvitationCode,
+        where: l_i_c.expired_time > ^now and l_i_c.is_active == true
       )
 
     sub_login_invitation_code |> Repo.get_by!(attr)
   end
+
   @doc """
   Creates a login_invitation_code.
 
