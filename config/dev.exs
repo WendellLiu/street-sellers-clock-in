@@ -45,13 +45,8 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
   hostname: "localhost",
   pool_size: 10
 
-config :redix,
-  host: "127.0.0.1",
-  port: "6379"
-
 config :street_sellers_clock_in, StreetSellersClockIn.Guardian,
   issuer: "street_sellers_clock_in",
   secret_key: "Secret key. You can use `mix guardian.gen.secret` to get one"
 
 import_config "dev.secret.exs"
-

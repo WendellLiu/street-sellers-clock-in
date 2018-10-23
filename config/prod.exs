@@ -20,7 +20,6 @@ config :street_sellers_clock_in, StreetSellersClockInWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   secret_key_base: System.get_env("WEB_API_SERVER_SECRET")
 
-
 # Do not print debug messages in production
 config :logger, level: :info
 
@@ -33,10 +32,6 @@ config :street_sellers_clock_in, StreetSellersClockIn.Repo,
   hostname: System.get_env("POSTGRES_HOSTNAME"),
   port: System.get_env("POSTGRES_PORT"),
   pool_size: 15
-
-config :redix,
-  host: System.get_env("REDIS_HOSTNAME"),
-  port: System.get_env("REDIS_PORT")
 
 # ## SSL Support
 #

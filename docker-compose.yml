@@ -11,8 +11,3 @@ services:
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres
-  redis:
-    image: redis:4.0.10
-    ports:
-      - "127.0.0.1:6378:6379"
-    container_name: ssci_redis

@@ -9,8 +9,6 @@ defmodule StreetSellersClockIn.Accounts do
   alias StreetSellersClockIn.Accounts.User
   alias StreetSellersClockIn.ClockIn.ClockRecord
 
-  alias Utils.Data.Converters
-
   @doc """
   Returns the list of users.
 

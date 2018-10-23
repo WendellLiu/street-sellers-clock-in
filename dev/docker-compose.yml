@@ -8,12 +8,6 @@ services:
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres
-  redis:
-    image: redis:4.0.10
-    restart: always
-    env_file:
-     - $PWD/docker/.env
-    container_name: ssci_redis
   api_server:
     build:
       context: $PWD
