@@ -6,7 +6,7 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
   alias StreetSellersClockIn.Accounts
   alias Utils.Data.Converters
 
-  action_fallback StreetSellersClockInWeb.FallbackController
+  action_fallback(StreetSellersClockInWeb.FallbackController)
 
   def index(conn, _params) do
     clock_records = ClockIn.list_clock_records()
@@ -14,16 +14,20 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
   end
 
   def create(conn, %{
-      "clock_record" => clock_record_params,
-      "user_id" => user_id,
-    }) do
+        "clock_record" => clock_record_params
+      }) do
+    %{
+      "sub" => user_id
+    } = Guardian.Plug.current_claims(conn)
 
     user = Accounts.get_user!(user_id)
 
     case user.clock_record_id do
       nil ->
         clock_record_params = clock_record_params |> Converters.array_to_string("category_ids")
-        with {:ok, %ClockRecord{} = clock_record} <- ClockIn.create_clock_record(clock_record_params) do
+
+        with {:ok, %ClockRecord{} = clock_record} <-
+               ClockIn.create_clock_record(clock_record_params) do
           user_params = %{
             clock_record_id: clock_record |> Map.get(:id)
           }
@@ -35,13 +39,13 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
             |> render("show.json", clock_record: clock_record)
           end
         end
+
       _ ->
         conn
-          |> put_status(:unprocessable_entity)
-          |> render(StreetSellersClockInWeb.ErrorView, :"422")
-          |> halt
+        |> put_status(:unprocessable_entity)
+        |> render(StreetSellersClockInWeb.ErrorView, :"422")
+        |> halt
     end
-
   end
 
   def show(conn, %{"id" => id}) do
@@ -52,13 +56,15 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
   def update(conn, %{"id" => id, "clock_record" => clock_record_params}) do
     clock_record = ClockIn.get_clock_record!(id)
 
-    with {:ok, %ClockRecord{} = clock_record} <- ClockIn.update_clock_record(clock_record, clock_record_params) do
+    with {:ok, %ClockRecord{} = clock_record} <-
+           ClockIn.update_clock_record(clock_record, clock_record_params) do
       render(conn, "show.json", clock_record: clock_record)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     clock_record = ClockIn.get_clock_record!(id)
+
     with {:ok, %ClockRecord{}} <- ClockIn.delete_clock_record(clock_record) do
       send_resp(conn, :no_content, "")
     end

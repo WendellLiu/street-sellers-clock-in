@@ -20,15 +20,11 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api", StreetSellersClockInWeb do
     pipe_through(:protected_api)
 
-    resources "/users", UserController, except: [:create, :index, :show] do
-      post("/clock_in", ClockRecordController, :create, as: :user_clock_in)
-    end
-
     resources("/login_invitation_code", LoginInvitationCodeController)
   end
 
   scope "/api/product", StreetSellersClockInWeb do
-    pipe_through(:api)
+    pipe_through(:protected_api)
 
     resources("/categories", CategoryController, except: [:index, :show])
   end
@@ -39,12 +35,14 @@ defmodule StreetSellersClockInWeb.Router do
     resources("/categories", CategoryController, only: [:index, :show])
   end
 
-  scope "/api/clock_in", StreetSellersClockInWeb do
+  # for street sellers
+  scope "/api", StreetSellersClockInWeb do
     pipe_through(:protected_api)
 
-    resources "/clock_record", ClockRecordController, except: [:create] do
-      put("/clock_out", ClockRecordController, :clock_out, as: :clock_out)
-    end
+    resources("/clock_record", ClockRecordController, only: [:index, :show, :update])
+    post("/clock_record/clock_in", ClockRecordController, :create, as: :street_seller_clock_in)
+
+    put("/clock_record/clock_out", ClockRecordController, :clock_out, as: :street_seller_clock_out)
   end
 
   scope "/api/auth", StreetSellersClockInWeb do
