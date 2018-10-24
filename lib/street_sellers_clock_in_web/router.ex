@@ -39,10 +39,10 @@ defmodule StreetSellersClockInWeb.Router do
   scope "/api", StreetSellersClockInWeb do
     pipe_through(:protected_api)
 
-    resources("/clock_record", ClockRecordController, only: [:index, :show, :update])
-    post("/clock_record/clock_in", ClockRecordController, :create, as: :street_seller_clock_in)
+    put("/clock_record/clock_out", ClockRecordController, :street_seller_clock_out)
 
-    put("/clock_record/clock_out", ClockRecordController, :clock_out, as: :street_seller_clock_out)
+    post("/clock_record/clock_in", ClockRecordController, :create, as: :street_seller_clock_in)
+    resources("/clock_record", ClockRecordController, only: [:index, :show, :update])
   end
 
   scope "/api/auth", StreetSellersClockInWeb do

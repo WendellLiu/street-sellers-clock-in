@@ -75,4 +75,29 @@ defmodule StreetSellersClockInWeb.ClockRecordController do
       render(conn, "show.json", clock_record: clock_record)
     end
   end
+
+  def street_seller_clock_out(conn, _params) do
+    %{
+      "sub" => user_id
+    } = Guardian.Plug.current_claims(conn)
+
+    user = Accounts.get_user!(user_id)
+
+    with %{
+           clock_record_id: clock_record_id
+         } <- user do
+      case is_nil(clock_record_id) do
+        true ->
+          conn
+          |> put_status(:unprocessable_entity)
+          |> render(StreetSellersClockInWeb.ErrorView, :"422")
+          |> halt
+
+        _ ->
+          with {:ok, %ClockRecord{} = clock_record} <- ClockIn.clock_out(clock_record_id) do
+            render(conn, "show.json", clock_record: clock_record)
+          end
+      end
+    end
+  end
 end
