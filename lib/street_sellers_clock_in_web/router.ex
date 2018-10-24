@@ -1,14 +1,29 @@
 defmodule StreetSellersClockInWeb.Router do
   use StreetSellersClockInWeb, :router
-  alias StreetSellersClockInWeb.Pipeline.TokenValidation
+  alias StreetSellersClockInWeb.Pipelines.TokenValidation
+  alias StreetSellersClockInWeb.Pipelines.PermissionCheck
+  alias Constants.Mapping
 
   pipeline :api do
     plug(:accepts, ["json"])
   end
 
-  pipeline :protected_api do
+  pipeline :seller_protected_api do
     plug(:accepts, ["json"])
     plug(TokenValidation)
+    plug(PermissionCheck, Mapping.user_permission()[:SELLER])
+  end
+
+  pipeline :operation_protected_api do
+    plug(:accepts, ["json"])
+    plug(TokenValidation)
+    plug(PermissionCheck, Mapping.user_permission()[:OPERATION])
+  end
+
+  pipeline :admin_protected_api do
+    plug(:accepts, ["json"])
+    plug(TokenValidation)
+    plug(PermissionCheck, Mapping.user_permission()[:ADMIN])
   end
 
   scope "/api", StreetSellersClockInWeb do
@@ -17,14 +32,21 @@ defmodule StreetSellersClockInWeb.Router do
     resources("/users", UserController, only: [:index, :show])
   end
 
+  # TODO: add change user data api routes
   scope "/api", StreetSellersClockInWeb do
-    pipe_through(:protected_api)
+    pipe_through(:admin_protected_api)
+
+    resources("/users", UserController, only: [:update, :delete])
+  end
+
+  scope "/api", StreetSellersClockInWeb do
+    pipe_through(:operation_protected_api)
 
     resources("/login_invitation_code", LoginInvitationCodeController)
   end
 
   scope "/api/product", StreetSellersClockInWeb do
-    pipe_through(:protected_api)
+    pipe_through(:operation_protected_api)
 
     resources("/categories", CategoryController, except: [:index, :show])
   end
@@ -37,7 +59,7 @@ defmodule StreetSellersClockInWeb.Router do
 
   # for street sellers
   scope "/api", StreetSellersClockInWeb do
-    pipe_through(:protected_api)
+    pipe_through(:seller_protected_api)
 
     put("/clock_record/clock_out", ClockRecordController, :street_seller_clock_out)
 
