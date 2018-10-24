@@ -96,4 +96,47 @@ defmodule StreetSellersClockInWeb.LoginController do
       end
     end
   end
+
+  def create_by_refresh_token(conn, %{"login" => login_params}) do
+    %{
+      "refresh_token" => given_refresh_token
+    } = login_params
+
+    {:ok, %{"sub" => user_id}} = Guardian.decode_and_verify(given_refresh_token)
+
+    with user <- Accounts.get_user_by_attr!(%{id: user_id}) do
+      case not is_nil(user) do
+        true ->
+          case user.is_active do
+            true ->
+              {:ok, access_token, _} =
+                Guardian.encode_and_sign(user, %{permission: user.permission})
+
+              {:ok, refresh_token, _} = Guardian.encode_and_sign(user, %{}, token_type: "refresh")
+
+              login = %{
+                access_token: access_token,
+                refresh_token: refresh_token,
+                user_id: user.id
+              }
+
+              conn
+              |> put_status(:created)
+              |> render("show.json", login: login)
+
+            false ->
+              conn
+              |> put_status(:forbidden)
+              |> render(StreetSellersClockInWeb.ErrorView, :"403")
+              |> halt
+          end
+
+        false ->
+          conn
+          |> put_status(:unauthorized)
+          |> render(StreetSellersClockInWeb.ErrorView, :"401")
+          |> halt
+      end
+    end
+  end
 end

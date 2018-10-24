@@ -3,7 +3,7 @@ defmodule StreetSellersClockIn.Repo.Migrations.AddActiveInUsers do
 
   def change do
     alter table(:users) do
-      add(:active, :boolean, default: true)
+      add(:is_active, :boolean, default: true)
     end
   end
 end

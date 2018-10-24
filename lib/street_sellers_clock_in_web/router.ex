@@ -53,5 +53,6 @@ defmodule StreetSellersClockInWeb.Router do
     post("/signup", UserController, :create)
     post("/login", LoginController, :create)
     post("/login/invitation_code", LoginController, :create_by_invitation_code)
+    post("/login/refresh_token", LoginController, :create_by_refresh_token)
   end
 end

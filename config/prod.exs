@@ -37,7 +37,7 @@ config :street_sellers_clock_in, StreetSellersClockIn.Guardian,
   issuer: System.get_env("WEB_API_SERVER_SECRET"),
   secret_key: "Secret key. You can use `mix guardian.gen.secret` to get one",
   token_ttl: %{
-    "access" => {3, :days},
+    "access" => {1, :days},
     "refresh" => {52, :weeks}
   }
 

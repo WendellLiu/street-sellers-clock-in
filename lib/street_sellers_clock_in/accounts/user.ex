@@ -12,7 +12,7 @@ defmodule StreetSellersClockIn.Accounts.User do
     field(:memo, :string)
     field(:clock_record_id, :id)
     field(:permission, :integer)
-    field(:active, :boolean)
+    field(:is_active, :boolean)
 
     timestamps()
   end
@@ -29,7 +29,7 @@ defmodule StreetSellersClockIn.Accounts.User do
       :memo,
       :clock_record_id,
       :permission,
-      :active
+      :is_active
     ])
     |> unique_constraint(:email)
     |> unique_constraint(:username)
