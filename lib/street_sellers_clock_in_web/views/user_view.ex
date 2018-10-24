@@ -11,7 +11,8 @@ defmodule StreetSellersClockInWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{id: user.id,
+    %{
+      id: user.id,
       username: user.username,
       alias: user.alias,
       avatar_id: user.avatar_id,
@@ -19,6 +20,7 @@ defmodule StreetSellersClockInWeb.UserView do
       memo: user.memo,
       clock_record_id: user.clock_record_id,
       permission: user.permission,
+      active: user.active
     }
   end
 end

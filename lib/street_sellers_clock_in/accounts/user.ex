@@ -3,16 +3,16 @@ defmodule StreetSellersClockIn.Accounts.User do
   import Ecto.Changeset
   alias Utils.Auth.Password
 
-
   schema "users" do
-    field :alias, :string
-    field :avatar_id, :string
-    field :email, :string
-    field :password, :string
-    field :username, :string
-    field :memo, :string
-    field :clock_record_id, :id
-    field :permission, :integer
+    field(:alias, :string)
+    field(:avatar_id, :string)
+    field(:email, :string)
+    field(:password, :string)
+    field(:username, :string)
+    field(:memo, :string)
+    field(:clock_record_id, :id)
+    field(:permission, :integer)
+    field(:active, :boolean)
 
     timestamps()
   end
@@ -20,7 +20,17 @@ defmodule StreetSellersClockIn.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :alias, :avatar_id, :password, :email, :memo, :clock_record_id, :permission])
+    |> cast(attrs, [
+      :username,
+      :alias,
+      :avatar_id,
+      :password,
+      :email,
+      :memo,
+      :clock_record_id,
+      :permission,
+      :active
+    ])
     |> unique_constraint(:email)
     |> unique_constraint(:username)
     |> foreign_key_constraint(:clock_record_id)
