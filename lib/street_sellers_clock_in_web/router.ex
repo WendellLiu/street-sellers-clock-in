@@ -1,15 +1,15 @@
 defmodule StreetSellersClockInWeb.Router do
   use StreetSellersClockInWeb, :router
-  # import StreetSellersClockInWeb.Plugs
+  alias StreetSellersClockInWeb.Pipeline.TokenValidation
 
   pipeline :api do
     plug(:accepts, ["json"])
   end
 
-  # pipeline :protected_api do
-  #   plug(:accepts, ["json"])
-  #   plug(:token_auth)
-  # end
+  pipeline :protected_api do
+    plug(:accepts, ["json"])
+    plug(TokenValidation)
+  end
 
   scope "/api", StreetSellersClockInWeb do
     pipe_through(:api)
@@ -18,7 +18,7 @@ defmodule StreetSellersClockInWeb.Router do
   end
 
   scope "/api", StreetSellersClockInWeb do
-    pipe_through(:api)
+    pipe_through(:protected_api)
 
     resources "/users", UserController, except: [:create, :index, :show] do
       post("/clock_in", ClockRecordController, :create, as: :user_clock_in)
@@ -40,7 +40,7 @@ defmodule StreetSellersClockInWeb.Router do
   end
 
   scope "/api/clock_in", StreetSellersClockInWeb do
-    pipe_through(:api)
+    pipe_through(:protected_api)
 
     resources "/clock_record", ClockRecordController, except: [:create] do
       put("/clock_out", ClockRecordController, :clock_out, as: :clock_out)
