@@ -20,3 +20,4 @@ services:
       - "127.0.0.1:${PORT:-4001}:${PORT:-4001}"
     restart: on-failure
     container_name: ssci_api_server
+
