@@ -9,10 +9,7 @@ services:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres
   api_server:
-    build:
-      image: wendellliu/street-sellers-clock-in
-      args:
-        - MIX_ENV=prod
+    image: wendellliu/street-sellers-clock-in
     env_file:
       - $PWD/docker/.env
     ports:
