@@ -4,14 +4,14 @@ services:
     image: postgres:11
     restart: always
     env_file:
-     - $PWD/docker/.env
+     - $PWD/deploy/.env
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres
   api_server:
     image: wendellliu/street-sellers-clock-in
     env_file:
-      - $PWD/docker/.env
+      - $PWD/deploy/.env
     ports:
       - "127.0.0.1:${PORT:-4001}:${PORT:-4001}"
     restart: on-failure
