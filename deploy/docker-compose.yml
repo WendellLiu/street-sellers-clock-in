@@ -9,7 +9,7 @@ services:
       - "${POSTGRES_HOSTNAME:-127.0.0.1}:${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}"
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
-    container_name: ssci_postgres
+    container_name: ssci_postgres_prod
   api_server:
     image: wendellliu/street-sellers-clock-in
     env_file:
@@ -17,4 +17,4 @@ services:
     ports:
       - "127.0.0.1:${PORT:-4001}:${PORT:-4001}"
     restart: on-failure
-    container_name: ssci_api_server
+    container_name: ssci_api_server_prod
