@@ -2,7 +2,6 @@ pipeline:
   docker:
     image: plugins/docker
     repo: wendellliu/street-sellers-clock-in
-    target: production
     dockerfile: Dockerfile
     secrets: [ docker_username, docker_password ]
     build_args:
