@@ -2,6 +2,7 @@ defmodule StreetSellersClockIn.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Utils.Auth.Password
+  alias Constants.Mapping
 
   schema "users" do
     field(:alias, :string)
@@ -34,7 +35,7 @@ defmodule StreetSellersClockIn.Accounts.User do
     |> unique_constraint(:email)
     |> unique_constraint(:username)
     |> foreign_key_constraint(:clock_record_id)
-    |> validate_required([:username, :alias, :password, :permission])
+    |> validate_required([:username, :alias, :password])
     |> handle_password(attrs)
   end
 

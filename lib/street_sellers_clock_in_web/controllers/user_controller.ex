@@ -4,7 +4,7 @@ defmodule StreetSellersClockInWeb.UserController do
   alias StreetSellersClockIn.Accounts
   alias StreetSellersClockIn.Accounts.User
 
-  action_fallback StreetSellersClockInWeb.FallbackController
+  action_fallback(StreetSellersClockInWeb.FallbackController)
 
   def index(conn, _params) do
     users = Accounts.list_users()
@@ -12,6 +12,8 @@ defmodule StreetSellersClockInWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+    user_params = Map.delete(user_params, "permission")
+
     with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
       conn
       |> put_status(:created)
@@ -38,6 +40,7 @@ defmodule StreetSellersClockInWeb.UserController do
 
   def delete(conn, %{"id" => id}) do
     user = Accounts.get_user!(id)
+
     with {:ok, %User{}} <- Accounts.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
