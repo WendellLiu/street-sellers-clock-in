@@ -4,9 +4,9 @@ services:
     image: postgres:11
     restart: always
     env_file:
-     - $PWD/dev/.env
+     - $PWD/.env
     ports:
-      - "${POSTGRES_HOSTNAME}:${POSTGRES_PORT]}:${POSTGRES_PORT}"
+      - "127.0.0.1:${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres_prod
@@ -17,8 +17,10 @@ services:
       args:
         - MIX_ENV=prod
     env_file:
-      - $PWD/dev/.env
+      - $PWD/.env
     ports:
       - "127.0.0.1:${PORT}:${PORT}"
     restart: on-failure
     container_name: ssci_api_server_prod
+    links:
+      - "postgres:${POSTGRES_HOSTNAME}"
