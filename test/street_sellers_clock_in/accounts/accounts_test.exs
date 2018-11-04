@@ -6,8 +6,20 @@ defmodule StreetSellersClockIn.AccountsTest do
   describe "users" do
     alias StreetSellersClockIn.Accounts.User
 
-    @valid_attrs %{alias: "some alias", avatar_id: "some avatar_id", email: "some email", password: "some password", username: "some username"}
-    @update_attrs %{alias: "some updated alias", avatar_id: "some updated avatar_id", email: "some updated email", password: "some updated password", username: "some updated username"}
+    @valid_attrs %{
+      alias: "some alias",
+      avatar_id: "some avatar_id",
+      email: "some email",
+      password: "some password",
+      username: "some username"
+    }
+    @update_attrs %{
+      alias: "some updated alias",
+      avatar_id: "some updated avatar_id",
+      email: "some updated email",
+      password: "some updated password",
+      username: "some updated username"
+    }
     @invalid_attrs %{alias: nil, avatar_id: nil, email: nil, password: nil, username: nil}
 
     def user_fixture(attrs \\ %{}) do
@@ -71,73 +83,17 @@ defmodule StreetSellersClockIn.AccountsTest do
     end
   end
 
-  describe "login_tokens" do
-    alias StreetSellersClockIn.Accounts.LoginToken
-
-    @valid_attrs %{expired_time: ~N[2010-04-17 14:00:00.000000], token: "some token"}
-    @update_attrs %{expired_time: ~N[2011-05-18 15:01:01.000000], token: "some updated token"}
-    @invalid_attrs %{expired_time: nil, token: nil}
-
-    def login_token_fixture(attrs \\ %{}) do
-      {:ok, login_token} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounts.create_login_token()
-
-      login_token
-    end
-
-    test "list_login_tokens/0 returns all login_tokens" do
-      login_token = login_token_fixture()
-      assert Accounts.list_login_tokens() == [login_token]
-    end
-
-    test "get_login_token!/1 returns the login_token with given id" do
-      login_token = login_token_fixture()
-      assert Accounts.get_login_token!(login_token.id) == login_token
-    end
-
-    test "create_login_token/1 with valid data creates a login_token" do
-      assert {:ok, %LoginToken{} = login_token} = Accounts.create_login_token(@valid_attrs)
-      assert login_token.expired_time == ~N[2010-04-17 14:00:00.000000]
-      assert login_token.token == "some token"
-    end
-
-    test "create_login_token/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_login_token(@invalid_attrs)
-    end
-
-    test "update_login_token/2 with valid data updates the login_token" do
-      login_token = login_token_fixture()
-      assert {:ok, login_token} = Accounts.update_login_token(login_token, @update_attrs)
-      assert %LoginToken{} = login_token
-      assert login_token.expired_time == ~N[2011-05-18 15:01:01.000000]
-      assert login_token.token == "some updated token"
-    end
-
-    test "update_login_token/2 with invalid data returns error changeset" do
-      login_token = login_token_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_login_token(login_token, @invalid_attrs)
-      assert login_token == Accounts.get_login_token!(login_token.id)
-    end
-
-    test "delete_login_token/1 deletes the login_token" do
-      login_token = login_token_fixture()
-      assert {:ok, %LoginToken{}} = Accounts.delete_login_token(login_token)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_login_token!(login_token.id) end
-    end
-
-    test "change_login_token/1 returns a login_token changeset" do
-      login_token = login_token_fixture()
-      assert %Ecto.Changeset{} = Accounts.change_login_token(login_token)
-    end
-  end
-
   describe "login_invitation_code" do
     alias StreetSellersClockIn.Accounts.LoginInvitationCode
 
-    @valid_attrs %{expired_time: ~N[2010-04-17 14:00:00.000000], invitation_code: "some invitation_code"}
-    @update_attrs %{expired_time: ~N[2011-05-18 15:01:01.000000], invitation_code: "some updated invitation_code"}
+    @valid_attrs %{
+      expired_time: ~N[2010-04-17 14:00:00.000000],
+      invitation_code: "some invitation_code"
+    }
+    @update_attrs %{
+      expired_time: ~N[2011-05-18 15:01:01.000000],
+      invitation_code: "some updated invitation_code"
+    }
     @invalid_attrs %{expired_time: nil, invitation_code: nil}
 
     def login_invitation_code_fixture(attrs \\ %{}) do
@@ -156,11 +112,15 @@ defmodule StreetSellersClockIn.AccountsTest do
 
     test "get_login_invitation_code!/1 returns the login_invitation_code with given id" do
       login_invitation_code = login_invitation_code_fixture()
-      assert Accounts.get_login_invitation_code!(login_invitation_code.id) == login_invitation_code
+
+      assert Accounts.get_login_invitation_code!(login_invitation_code.id) ==
+               login_invitation_code
     end
 
     test "create_login_invitation_code/1 with valid data creates a login_invitation_code" do
-      assert {:ok, %LoginInvitationCode{} = login_invitation_code} = Accounts.create_login_invitation_code(@valid_attrs)
+      assert {:ok, %LoginInvitationCode{} = login_invitation_code} =
+               Accounts.create_login_invitation_code(@valid_attrs)
+
       assert login_invitation_code.expired_time == ~N[2010-04-17 14:00:00.000000]
       assert login_invitation_code.invitation_code == "some invitation_code"
     end
@@ -171,7 +131,10 @@ defmodule StreetSellersClockIn.AccountsTest do
 
     test "update_login_invitation_code/2 with valid data updates the login_invitation_code" do
       login_invitation_code = login_invitation_code_fixture()
-      assert {:ok, login_invitation_code} = Accounts.update_login_invitation_code(login_invitation_code, @update_attrs)
+
+      assert {:ok, login_invitation_code} =
+               Accounts.update_login_invitation_code(login_invitation_code, @update_attrs)
+
       assert %LoginInvitationCode{} = login_invitation_code
       assert login_invitation_code.expired_time == ~N[2011-05-18 15:01:01.000000]
       assert login_invitation_code.invitation_code == "some updated invitation_code"
@@ -179,14 +142,23 @@ defmodule StreetSellersClockIn.AccountsTest do
 
     test "update_login_invitation_code/2 with invalid data returns error changeset" do
       login_invitation_code = login_invitation_code_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_login_invitation_code(login_invitation_code, @invalid_attrs)
-      assert login_invitation_code == Accounts.get_login_invitation_code!(login_invitation_code.id)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_login_invitation_code(login_invitation_code, @invalid_attrs)
+
+      assert login_invitation_code ==
+               Accounts.get_login_invitation_code!(login_invitation_code.id)
     end
 
     test "delete_login_invitation_code/1 deletes the login_invitation_code" do
       login_invitation_code = login_invitation_code_fixture()
-      assert {:ok, %LoginInvitationCode{}} = Accounts.delete_login_invitation_code(login_invitation_code)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_login_invitation_code!(login_invitation_code.id) end
+
+      assert {:ok, %LoginInvitationCode{}} =
+               Accounts.delete_login_invitation_code(login_invitation_code)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_login_invitation_code!(login_invitation_code.id)
+      end
     end
 
     test "change_login_invitation_code/1 returns a login_invitation_code changeset" do

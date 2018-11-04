@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :street_sellers_clock_in, StreetSellersClockIn.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "root",
+  password: "1qaz2wsx",
   database: "street_sellers_clock_in_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
