@@ -19,6 +19,6 @@ erl_crash.dump
 postgres/
 
 # secret
-deploy/.env
+*.env
 
 .elixir_ls/

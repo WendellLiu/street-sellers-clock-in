@@ -6,7 +6,7 @@ services:
     env_file:
      - $PWD/deploy/.env
     ports:
-      - "${POSTGRES_HOSTNAME:-127.0.0.1}:${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}"
+      - "${POSTGRES_HOSTNAME}:${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
       - $PWD/postgres:/var/lib/postgresql/data
     container_name: ssci_postgres_prod
@@ -15,6 +15,6 @@ services:
     env_file:
       - $PWD/deploy/.env
     ports:
-      - "127.0.0.1:${PORT:-4001}:${PORT:-4001}"
+      - "127.0.0.1:${PORT}:${PORT}"
     restart: on-failure
     container_name: ssci_api_server_prod
